@@ -1,0 +1,67 @@
+name: Library health
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: No old branding
+        run: |
+          if grep -r "MyClaude" --include="*.md" --include="*.sh" --include="*.py" \
+               --include="*.yml" --include="*.json" --include="*.txt" \
+               --exclude-dir=".github" .; then
+            echo "FAIL — old 'MyClaude' branding found"
+            exit 1
+          fi
+          echo "PASS — no old branding"
+
+      - name: Python syntax check
+        run: |
+          find . -name "*.py" -not -path "./.git/*" | xargs python3 -m py_compile
+          echo "PASS — all .py files compile"
+
+      - name: Ruff lint
+        run: ruff check .
+
+      - name: Skill template contract (all 8 sections present)
+        run: python3 scripts/skill_health.py
+
+      - name: Track template contract
+        run: python3 scripts/track_validator.py
+
+      - name: Track skill elevations reference real skills
+        run: python3 scripts/check_track_elevations.py
+
+      - name: Reference file links resolve
+        run: python3 scripts/check_reference_links.py
+
+      - name: INDEX.md consistency
+        run: python3 scripts/check_index.py
+
+      - name: Script --help smoke test
+        run: |
+          python3 scripts/mode_advisor.py --help
+          python3 scripts/skill_health.py --help
+          python3 scripts/skill_usage.py --help
+          python3 scripts/health_report.py --help
+          python3 scripts/track_advisor.py --help
+          python3 scripts/track_validator.py --help
+          python3 scripts/check_track_elevations.py --help
+          python3 scripts/check_reference_links.py --help
+          python3 scripts/check_index.py --help

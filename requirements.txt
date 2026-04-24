@@ -1,0 +1,3 @@
+# Python >= 3.10 required (uses match statements and | union types in type hints)
+PyYAML>=6.0
+ruff>=0.4.0
