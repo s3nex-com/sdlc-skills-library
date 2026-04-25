@@ -1,6 +1,6 @@
 # Skills index
 
-41 production-ready skill packages plus 10 domain tracks for a small, high-velocity engineering team (3–5 senior engineers). Each skill is a structured knowledge package with a `SKILL.md` (loaded on trigger), `references/` (loaded on demand), and `scripts/` where tooling exists. Each track is a curated overlay: TRACK.md plus domain `references/`. Philosophy: move fast, leave a trail.
+42 production-ready skill packages plus 14 domain tracks for a small, high-velocity engineering team (3–5 senior engineers). Each skill is a structured knowledge package with a `SKILL.md` (loaded on trigger), `references/` (loaded on demand), and `scripts/` where tooling exists. Each track is a curated overlay: TRACK.md plus domain `references/`. Philosophy: move fast, leave a trail.
 
 ---
 
@@ -56,7 +56,7 @@
 
 ---
 
-## Phase 3 — Sustained operations (9 skills)
+## Phase 3 — Sustained operations (10 skills)
 
 | Skill | Directory | What it covers |
 |-------|-----------|---------------|
@@ -69,6 +69,7 @@
 | Project closeout | `phase3/project-closeout/` | Documentation audit, deliverables sign-off, knowledge transfer, operational handover, DORA final report, lessons learned |
 | Cloud cost governance | `phase3/cloud-cost-governance/` | Cost attribution (tagging), per-feature estimation, monthly optimization audit, anomaly detection and response |
 | Developer onboarding | `phase3/developer-onboarding/` | Day-1/week-1/month-1 checklists, local dev setup, engineering norms codification, onboarding retros |
+| Sustainability and carbon audit | `phase3/sustainability-carbon-audit/` | Carbon baseline measurement, cloud provider carbon dashboards, green software patterns, carbon audit report |
 
 ---
 
@@ -80,7 +81,7 @@
 
 ---
 
-## Tracks — domain overlays (10 tracks)
+## Tracks — domain overlays (14 tracks)
 
 Tracks are not skills. They are curated overlays that elevate mandatory skills, tighten gate criteria, and inject domain reference material. Zero tracks is a valid state. Full guide: `docs/tracks.md`. Template: `skills/tracks/TRACK-TEMPLATE.md`.
 
@@ -96,6 +97,10 @@ Tracks are not skills. They are curated overlays that elevate mandatory skills, 
 | Consumer product | `tracks/consumer-product/` | A/B design, experiment statistics, event taxonomy, analytics setup |
 | Open source | `tracks/open-source/` | Semver discipline, deprecation policy, security disclosure, contributor experience, license compliance |
 | Mobile | `tracks/mobile/` | App store cycles, version management, offline-first, push notifications, performance |
+| Blockchain / Web3 | `tracks/blockchain-web3/` | Smart contract audit, key management, upgrade patterns (proxy/UUPS/diamond), oracle security, on-chain/off-chain patterns |
+| IoT / Embedded | `tracks/iot-embedded/` | Device security, OTA update patterns, fleet rollout, edge computing, offline-first for devices |
+| Gaming | `tracks/gaming/` | Real-time multiplayer patterns, IAP flows, live ops, latency SLOs, anti-cheat, staged player rollout |
+| Defense / Classified | `tracks/defense-classified/` | ITAR/EAR controls, RMF/ATO authorization, air-gapped deployment, classified CI/CD |
 
 ---
 

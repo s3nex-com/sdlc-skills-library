@@ -1,6 +1,8 @@
-# skills/ — the 41-skill library plus 10 domain tracks
+# skills/ — the 42-skill library plus 14 domain tracks
 
 This directory contains all skill packages and domain tracks. Each **skill** has a `SKILL.md` (loaded when the skill triggers), a `references/` subdirectory (loaded on demand), and some have `scripts/`. Each **track** (under `tracks/`) has a `TRACK.md` plus `references/` — tracks are overlays, not skills. Full tracks guide: `docs/tracks.md`.
+
+---
 
 ---
 
@@ -49,7 +51,7 @@ This directory contains all skill packages and domain tracks. Each **skill** has
 | disaster-recovery | `phase2/disaster-recovery/` |
 | caching-strategy | `phase2/caching-strategy/` |
 
-### Phase 3 — Sustained operations (9)
+### Phase 3 — Sustained operations (10)
 | Skill | Directory |
 |-------|-----------|
 | technical-debt-tracker | `phase3/technical-debt-tracker/` |
@@ -61,6 +63,7 @@ This directory contains all skill packages and domain tracks. Each **skill** has
 | project-closeout | `phase3/project-closeout/` |
 | cloud-cost-governance | `phase3/cloud-cost-governance/` |
 | developer-onboarding | `phase3/developer-onboarding/` |
+| sustainability-carbon-audit | `phase3/sustainability-carbon-audit/` |
 
 ### Phase 4 — Advanced assurance (1)
 | Skill | Directory |
@@ -69,7 +72,7 @@ This directory contains all skill packages and domain tracks. Each **skill** has
 
 ---
 
-## Tracks — domain overlays (10)
+## Tracks — domain overlays (14)
 
 | Track | Directory |
 |-------|-----------|
@@ -83,6 +86,10 @@ This directory contains all skill packages and domain tracks. Each **skill** has
 | consumer-product | `tracks/consumer-product/` |
 | open-source | `tracks/open-source/` |
 | mobile | `tracks/mobile/` |
+| blockchain-web3 | `tracks/blockchain-web3/` |
+| iot-embedded | `tracks/iot-embedded/` |
+| gaming | `tracks/gaming/` |
+| defense-classified | `tracks/defense-classified/` |
 
 Template: `tracks/TRACK-TEMPLATE.md`. Track-level invariants: `tracks/CLAUDE.md`.
 

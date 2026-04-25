@@ -15,7 +15,7 @@ The mode you pick controls which skills run, how hard the gates are, and how muc
 
 Workflow paths: **Hotfix** (skip to Stage 3), **Spike** (time-boxed exploration), **Brownfield** (codebase assessment)
 
-Domain tracks (orthogonal to mode — see `docs/tracks.md`): Fintech, SaaS B2B, Data platform / ML ops, Healthcare / HIPAA, Regulated / government, Real-time / streaming, Consumer, Open source, Mobile. A session is in exactly one mode and zero or more tracks.
+Domain tracks (orthogonal to mode — see `docs/tracks.md`): Fintech, SaaS B2B, Web product, Data platform / ML ops, Healthcare / HIPAA, Regulated / government, Real-time / streaming, Consumer, Open source, Mobile, Blockchain / Web3, IoT / Embedded, Gaming, Defense / Classified. A session is in exactly one mode and zero or more tracks.
 
 ---
 
@@ -339,6 +339,10 @@ Some tracks carry domain obligations that cannot be honoured inside Nano's 2–4
 | Consumer product | Nano | Nano is acceptable with a flag and event sanity check; experiment design is not required at Nano |
 | Open source | Lean | Semver and CHANGELOG discipline require at least a design review |
 | Mobile | Lean | Store submission and phased rollout planning are minimum Lean concerns |
+| Blockchain / Web3 | Standard | Irreversible transactions and external audit requirements cannot be satisfied in Lean's time budget |
+| IoT / Embedded | Lean | OTA rollback strategy and device threat model require a design-gate document |
+| Gaming | Lean | Latency SLOs, live ops flag architecture, and IAP validation strategy require a design review |
+| Defense / Classified | Rigorous | RMF/ATO requirements, ITAR controls, and air-gapped deployment planning are not achievable below Rigorous |
 
 **Conflict resolution:** When a track mandates a skill at a mode level below the declared mode, the declared mode wins (its requirements include everything below it). When a track mandates a skill at a mode level *above* the declared mode, the track elevation wins — that skill becomes mandatory regardless of mode. The net effect: skill elevations union, and the track never removes a mode's existing requirements.
 
@@ -387,3 +391,28 @@ Start in one mode, discover you need more rigor. Do not restart — promote in p
 | Legal or compliance flag raised | Promote to Rigorous |
 | Performance NFRs suddenly critical | Add `performance-reliability-engineering` at minimum |
 | Irreversible data operation identified | Promote to Rigorous |
+| Track activated whose minimum mode exceeds current mode | Promote to track's minimum — orchestrator flags and confirms |
+
+**Worked examples — mid-project promotion:**
+
+```
+Example 1: Lean → Standard
+  Discovery: Mobile team confirms they will consume the API being built.
+  Action: Log BLOCKED — "mode promotion: Lean → Standard — external API consumer discovered"
+  Then: Run specification-driven-development and security-audit-secure-sdlc (STRIDE) for Stage 2.
+  Continue: Resume from current stage with Standard gates.
+
+Example 2: Standard → Rigorous (track-driven)
+  Discovery: Legal confirms the feature processes cardholder data — PCI scope applies.
+  Action: Activate Fintech track. Fintech minimum mode is Lean; declared mode is Standard.
+           Standard satisfies Lean minimum — no mode promotion needed.
+           But PCI-scope changes require Rigorous per the track's elevation table.
+  Action: Promote to Rigorous. Log: "mode promotion: Standard → Rigorous — PCI scope confirmed"
+  Then: Add architecture-review-governance, formal-verification (idempotency protocols), chaos-engineering.
+  Continue: Re-run Stage 2 design review with Rigorous gates.
+
+Example 3: Nano → Lean (auto, no confirmation required)
+  Discovery: code-implementer Stage 3 begins; engineer adds ALTER TABLE to migration script.
+  Action: Auto-promote to Lean. Orchestrator inserts database-migration skill. No manual step needed.
+  Log: "mode promotion: Nano → Lean — ALTER TABLE detected in implementation (auto-promotion rule)"
+```

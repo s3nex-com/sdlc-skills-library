@@ -4,6 +4,26 @@ This is a reference card, not a document. Use it when you have work to do and ne
 
 ---
 
+## Mode selection — at a glance
+
+```mermaid
+flowchart TD
+    A([Start]) --> B{Who uses this\nif it breaks?}
+    B -->|Internal only| C{API contract\ndependency?}
+    B -->|External users| D{Rollback\ndifficulty?}
+    B -->|Regulated or\nfinancial| R([Rigorous])
+    C -->|No| E{Easy\nrollback?}
+    C -->|Yes| L([Lean])
+    E -->|Yes| N([Nano])
+    E -->|No| L
+    D -->|Easy| S([Standard])
+    D -->|Hard or\nirreversible| R
+```
+
+Not sure? Tell the orchestrator what you're building — it asks three questions and derives the mode.
+
+---
+
 ## Step 1: Pick a mode
 
 Every pipeline run operates in a mode. Say it upfront or let the orchestrator derive it.
@@ -40,6 +60,10 @@ Tracks are domain overlays. Zero tracks is valid and common. Declare a track whe
 | "consumer track" / "A/B test" / "content feed" / "push campaign" / "viral loop" | **Consumer product** | Experiment design, event taxonomy, notifications, feed caching, consumer-scale performance |
 | "open source track" / "semver" / "CVE disclosure" | **Open source** | Semver discipline, deprecation, VDP, contributor experience |
 | "mobile track" / "iOS" / "Android" / "TestFlight" | **Mobile** | Store cycles, version management, offline-first, push, perf |
+| "blockchain track" / "smart contract" / "Solidity" / "DeFi" / "Web3" | **Blockchain / Web3** | Smart contract audit, key management, upgrade patterns, oracle security |
+| "IoT track" / "firmware" / "embedded" / "OTA update" / "MQTT" | **IoT / Embedded** | Device security, OTA rollback, fleet rollout, edge patterns |
+| "gaming track" / "game server" / "matchmaking" / "live ops" | **Gaming** | Multiplayer patterns, IAP flows, latency SLOs, staged rollout |
+| "defense track" / "classified" / "ITAR" / "RMF" / "air-gapped" | **Defense / Classified** | ITAR/EAR controls, RMF/ATO, air-gapped deployment |
 
 Multiple tracks compose additively. Declare them together with the mode:
 ```

@@ -12,7 +12,7 @@ Tracks are additive, not subtractive. They never disable skills — they add con
 
 ---
 
-## The 10 tracks
+## The 14 tracks
 
 | Track | Covers | Typical mode | Min mode |
 |-------|--------|--------------|----------|
@@ -26,6 +26,10 @@ Tracks are additive, not subtractive. They never disable skills — they add con
 | [Consumer product](../skills/tracks/consumer-product/TRACK.md) | B2C products: experimentation, growth, analytics, notifications, feeds, viral mechanics | Lean or Standard | Nano |
 | [Open source](../skills/tracks/open-source/TRACK.md) | Public libraries with semver, contributor pipeline, CVE disclosure | Standard | Lean |
 | [Mobile](../skills/tracks/mobile/TRACK.md) | iOS, Android, React Native, Flutter — native mobile apps | Standard | Lean |
+| [Blockchain / Web3](../skills/tracks/blockchain-web3/TRACK.md) | Smart contracts, DeFi, NFTs, crypto custody, key management, upgrade patterns | Standard or Rigorous | Standard |
+| [IoT / Embedded](../skills/tracks/iot-embedded/TRACK.md) | Firmware, connected devices, OTA updates, fleet management, edge computing | Lean or Standard | Lean |
+| [Gaming](../skills/tracks/gaming/TRACK.md) | Real-time multiplayer, live ops, IAP, latency SLOs, anti-cheat | Lean or Standard | Lean |
+| [Defense / Classified](../skills/tracks/defense-classified/TRACK.md) | Classified systems, ITAR/EAR, RMF/ATO, air-gapped deployment | Rigorous | Rigorous |
 
 Zero tracks is a valid state — most projects run without a track. One to N tracks may be active simultaneously.
 
@@ -112,6 +116,29 @@ Once set on a project, every new feature inherits the track(s) without re-declar
 | Gate modification | Strictest wins — if two tracks modify the same gate, the harder criterion applies |
 | Reference injection | Additive — all applicable references load for every triggered skill |
 
+**Worked examples — multi-track composition:**
+
+**Example 1: IoT + Fintech (payment terminal)**
+A payment terminal firmware project activates IoT / Embedded + Fintech / Payments.
+- Minimum mode: Fintech requires Standard for PCI-scope changes; IoT requires Lean → **Standard wins**
+- Skill elevations: union of both tracks — `security-audit-secure-sdlc` is mandatory with *both* device threat model (IoT) and PCI-scope review (Fintech); `disaster-recovery` is mandatory with OTA rollback (IoT) and reconciliation runbook (Fintech)
+- Gate modifications: Stage 2 requires OTA rollback design (IoT) AND idempotency + PCI scope identification (Fintech) — both apply
+- Reference injection: when `security-audit-secure-sdlc` fires, load both `device-security-guide.md` (IoT) and `pci-dss-checklist.md` (Fintech)
+
+**Example 2: Gaming + Data platform (analytics pipeline)**
+A live-service game adds a real-time analytics pipeline. Gaming + Data platform / ML ops.
+- Minimum mode: both are Lean → **Lean** (or higher if the team declares it)
+- Skill elevations: `observability-sre-practice` is mandatory with session analytics + DAU metrics (Gaming) AND freshness SLOs + quality SLOs (Data platform) — both sets of requirements apply
+- Gate modifications: Stage 4 requires load test at target concurrent player count (Gaming) AND data quality tests + backfill parity test (Data platform)
+- Reference injection: when `comprehensive-test-strategy` fires, load both `real-time-multiplayer-patterns.md` (Gaming) and `data-quality-framework.md` (Data platform)
+
+**Example 3: Blockchain + Regulated / Government (cleared crypto custody)**
+A cleared facility builds a blockchain-based evidence chain for law enforcement. Blockchain / Web3 + Defense / Classified.
+- Minimum mode: Blockchain requires Standard; Defense requires Rigorous → **Rigorous wins**
+- Skill elevations: `formal-verification` is mandatory (Blockchain requires it for money-movement logic; Defense requires it for cryptographic protocols) — applied once with both domains' requirements
+- Gate modifications: Stage 4 requires external smart contract audit (Blockchain) AND DISA STIG scan + government penetration test (Defense) — both apply; neither replaces the other
+- The strictest gate criterion applies at every stage: if Blockchain requires testnet deployment and Defense requires air-gapped testing, the team must satisfy both
+
 Example: a B2B healthcare SaaS product runs SaaS B2B + Healthcare. Both tenant isolation tests and HIPAA audit-log evidence are mandatory. `documentation-system-design` at the release gate must produce both SLA documentation (B2B) and audit trail evidence (Healthcare).
 
 ### Logging
@@ -185,7 +212,7 @@ When a domain keeps surfacing in work but no existing track covers it:
 6. Run `scripts/check_track_elevations.py` to verify every skill elevation maps to a real skill.
 7. Update this doc's track list, `docs/quickstart.md`, `docs/skill-triggers.md`, `skills/INDEX.md`, `skills/tracks/CLAUDE.md`, and `README.md`.
 
-Candidate future tracks as demand surfaces: Embedded / constrained devices, Edge computing, Blockchain, AR/VR, Automotive, Industrial IoT, Desktop apps.
+Candidate future tracks as demand surfaces: AR/VR, Automotive, Desktop apps.
 
 Note: the Web product track was added as track 10. It covers the common shape of multi-user web products (auth, RBAC, API + frontend, DB concurrency, subscription billing) that falls between "no track" and SaaS B2B. SaaS B2B requires enterprise SSO, SAML, and contractual SLAs as preconditions; Web product does not.
 

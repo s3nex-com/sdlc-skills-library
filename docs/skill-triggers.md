@@ -122,6 +122,10 @@ Tracks overlay a mode with domain-specific mandatory skills and tighter gates. D
 | "consumer track", "A/B test", "experiment", "split test", "variant", "product analytics", "Amplitude", "Mixpanel", "Heap", "PostHog", "Segment", "referral", "viral loop", "retention metric", "content feed", "notification campaign", "push campaign", "notification inbox", "viral coefficient", "k-factor", "recommendation engine" | consumer-product |
 | "open source track", "open source this", "publish to npm/PyPI/Crates.io", "semver", "breaking change policy", "deprecation", "CONTRIBUTING.md", "security advisory", "CVE disclosure", "SPDX", "OSI-approved" | open-source |
 | "mobile track", "iOS", "Android", "React Native", "Flutter", "App Store Connect", "Play Console", "TestFlight", "APNS", "FCM", "offline-first", "sync engine" | mobile |
+| "blockchain track", "smart contract", "Solidity", "EVM", "DeFi", "NFT", "Web3", "dApp", "on-chain", "crypto custody", "multisig", "key ceremony", "Gnosis Safe", "gas optimisation", "oracle", "Chainlink", "L2", "rollup", "proxy pattern", "UUPS", "timelock" | blockchain-web3 |
+| "IoT track", "firmware", "embedded", "RTOS", "connected device", "IoT", "Industrial IoT", "edge computing", "OTA update", "MQTT", "CoAP", "BLE", "microcontroller", "MCU", "secure boot", "device provisioning", "fleet management", "device attestation", "mTLS device" | iot-embedded |
+| "gaming track", "game development", "game server", "real-time multiplayer", "matchmaking", "anti-cheat", "in-app purchase", "loot box", "live ops", "game economy", "tick rate", "client-side prediction", "lag compensation", "DAU", "session analytics", "Unity", "Unreal", "Godot" | gaming |
+| "defense track", "classified system", "CUI", "ITAR", "EAR", "export control", "DoD", "DISA STIG", "RMF", "ATO classified", "air-gapped", "SCI", "SAP", "DFARS", "cleared personnel", "NIST 800-171", "CMMC Level 3", "IL5", "IL6" | defense-classified |
 
 Multiple tracks compose: "Rigorous mode, Healthcare + Regulated tracks — clinical notes with FedRAMP Moderate". Full guide: `docs/tracks.md`.
 
