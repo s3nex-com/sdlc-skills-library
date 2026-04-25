@@ -1,9 +1,9 @@
-# Project Health Report — 2026-04-24
+# Project Health Report — 2026-04-25
 
 ## Delivery
 - Deployment frequency: 1 release in last 30 days (via git tags)
-- Last deployment: 2026-04-24 (v1.0.0)
-- Pipeline status: not available (no docs/sdlc-status.md found)
+- Last deployment: 2026-04-25 (v1.0.1)
+- Pipeline status: SDLC Pipeline Status
 
 ## Quality
 - Test coverage: not available (no coverage.xml found)

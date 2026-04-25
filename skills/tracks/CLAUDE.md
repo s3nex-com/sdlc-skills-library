@@ -6,7 +6,7 @@ Full concept: `docs/tracks.md`. TRACK.md contract and template: `TRACK-TEMPLATE.
 
 ---
 
-## The 10 tracks
+## The 14 tracks
 
 | Track | Directory | Covers | Min mode |
 |-------|-----------|--------|----------|
@@ -20,6 +20,10 @@ Full concept: `docs/tracks.md`. TRACK.md contract and template: `TRACK-TEMPLATE.
 | Consumer product | `consumer-product/` | B2C: experimentation, feed caching, notifications, viral mechanics, consumer-scale performance | Nano |
 | Open source | `open-source/` | Public libraries with semver, contributor pipeline, CVE disclosure, contributor onboarding | Lean |
 | Mobile | `mobile/` | iOS, Android, React Native, Flutter | Lean |
+| Blockchain / Web3 | `blockchain-web3/` | Smart contracts, DeFi, NFTs, crypto custody, key management, upgrade patterns, oracle security | Standard |
+| IoT / Embedded | `iot-embedded/` | Firmware, connected devices, OTA updates, fleet management, edge computing | Lean |
+| Gaming | `gaming/` | Real-time multiplayer, live ops, IAP, latency SLOs, anti-cheat, staged player rollout | Lean |
+| Defense / Classified | `defense-classified/` | Classified systems, ITAR/EAR controls, RMF/ATO, air-gapped deployment | Rigorous |
 
 ---
 

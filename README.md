@@ -1,6 +1,6 @@
 # sdlc-skills-library — SDLC Skill Library for Claude Code
 
-A library of 41 production-ready Claude Code skills plus 10 domain tracks covering every phase of the software development lifecycle. Built for small, high-velocity engineering teams (3–5 senior engineers).
+A library of 42 production-ready Claude Code skills plus 14 domain tracks covering every phase of the software development lifecycle. Built for small, high-velocity engineering teams (3–5 senior engineers).
 
 ## What this is
 
@@ -17,7 +17,7 @@ skills/
 ├── phase2/            # 20 skills — delivery quality
 ├── phase3/            # 9 skills  — sustained operations
 ├── phase4/            # 1 skill   — advanced assurance
-└── tracks/            # 10 tracks — domain overlays (Fintech, SaaS B2B, Web product, Healthcare, ...)
+└── tracks/            # 14 tracks — domain overlays (Fintech, SaaS B2B, Web product, Healthcare, Blockchain, IoT, Gaming, Defense, ...)
 docs/
 ├── quickstart.md      — decision tree: where to start
 ├── modes.md           — full guide to operating modes (Nano/Lean/Standard/Rigorous)
@@ -80,6 +80,10 @@ Tracks are a second, orthogonal dimension to mode. Where **mode** answers *how m
 | **Consumer product** | B2C products: experimentation, feed caching, notifications, viral mechanics, consumer-scale performance | Lean or Standard | Nano |
 | **Open source** | Public libraries with semver, CVE disclosure, contributor pipeline and onboarding | Standard | Lean |
 | **Mobile** | iOS, Android, React Native, Flutter | Standard | Lean |
+| **Blockchain / Web3** | Smart contracts, DeFi, NFTs, crypto custody, key management, on-chain/off-chain patterns | Standard or Rigorous | Standard |
+| **IoT / Embedded** | Firmware, connected devices, OTA update safety, fleet management, edge computing | Lean or Standard | Lean |
+| **Gaming** | Real-time multiplayer, live ops, IAP flows, latency SLOs, anti-cheat, staged player rollout | Lean or Standard | Lean |
+| **Defense / Classified** | Classified systems, ITAR/EAR export controls, RMF/ATO authorization, air-gapped deployment | Rigorous | Rigorous |
 
 Zero tracks is a valid state — most projects run with zero. Multi-domain projects run two or more; they compose additively (skill elevation = union, gate modifications = strictest wins, reference injection = all apply).
 
@@ -246,6 +250,7 @@ Full trigger list: `docs/skill-triggers.md`
 | project-closeout | Documentation audit, deliverables sign-off, knowledge transfer, DORA final report |
 | cloud-cost-governance | Cost attribution tagging, per-feature cost estimates, monthly optimization audit, anomaly detection |
 | developer-onboarding | Onboarding checklists, local dev setup, engineering norms codification |
+| sustainability-carbon-audit | Carbon baseline measurement, green software patterns, carbon audit report |
 
 ### Phase 4 — Advanced Assurance
 | Skill | Purpose |
@@ -265,6 +270,10 @@ Full trigger list: `docs/skill-triggers.md`
 | consumer-product | `skills/tracks/consumer-product/` | A/B design, experiment statistics, event taxonomy, feed caching, notification pipeline, consumer-scale performance |
 | open-source | `skills/tracks/open-source/` | Semver, deprecation, security disclosure, contributor experience, license |
 | mobile | `skills/tracks/mobile/` | App store cycles, version management, offline-first, push, performance |
+| blockchain-web3 | `skills/tracks/blockchain-web3/` | Smart contract audit, key management, upgrade patterns, oracle security, on-chain/off-chain |
+| iot-embedded | `skills/tracks/iot-embedded/` | Device security, OTA update patterns, fleet rollout, edge computing, offline-first for devices |
+| gaming | `skills/tracks/gaming/` | Real-time multiplayer patterns, IAP flows, live ops, latency SLOs, anti-cheat |
+| defense-classified | `skills/tracks/defense-classified/` | ITAR/EAR controls, RMF/ATO authorization, air-gapped deployment, classified CI/CD |
 
 ## Installation
 
@@ -348,7 +357,7 @@ Unknown options are rejected with a non-zero exit code. Target project paths are
 - **No idea where to begin?** → `docs/quickstart.md` — decision tree
 - **Need to pick a mode?** → `docs/modes.md` — full mode guide with worked examples
 - **Need to pick a track?** → `docs/tracks.md` — full track guide; or run `python scripts/track_advisor.py`
-- **Looking for trigger phrases?** → `docs/skill-triggers.md` — natural language for all 41 skills and 10 tracks
+- **Looking for trigger phrases?** → `docs/skill-triggers.md` — natural language for all 42 skills and 14 tracks
 - **Need the full skill reference?** → `skills/MASTER-GUIDE.md`
 
 ## Automation Scripts
