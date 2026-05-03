@@ -34,6 +34,8 @@ git pull --ff-only origin master
 
 If `git pull --ff-only` refuses, you have local commits or merges on top of old `master`. See [Git docs on diverged branches](https://git-scm.com/docs/git-pull#_discussion) — typically `git stash` (or branch your work), reset to `origin/master`, then re-apply.
 
+Contributors cloning for pull requests should also run `git config core.hooksPath .githooks` once (see [CONTRIBUTING.md](CONTRIBUTING.md)) so Cursor-style `Co-authored-by` tooling lines are stripped from commits.
+
 ## Structure
 
 ```
