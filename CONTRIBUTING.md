@@ -32,6 +32,14 @@ git clone https://github.com/<your-username>/sdlc-skills-library.git
 cd sdlc-skills-library
 ```
 
+Optional but recommended (one command per clone): use the repo’s Git hooks so automated tools do not leave a `Co-authored-by: Cursor <cursoragent@cursor.com>` line on your commits:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Hooks live in [`.githooks/`](.githooks/); they are not picked up automatically—you must set `core.hooksPath` as above (or install them another way you prefer).
+
 ### 2. Create a branch
 
 Use a descriptive branch name:

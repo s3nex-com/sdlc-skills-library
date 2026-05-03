@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+"""Remove Cursor agent Co-authored-by trailers before the commit record is finalized.
+
+Enable once per clone:  git config core.hooksPath .githooks
+
+See CONTRIBUTING.md.
+"""
+import pathlib
+import sys
+
+MARKER = "Co-authored-by: Cursor <cursoragent@cursor.com>"
+
+msg_path = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "").resolve()
+
+if not msg_path.is_file():
+    sys.exit(0)
+
+text = msg_path.read_text(encoding="utf-8")
+lines = text.splitlines(keepends=True)
+
+out = [ln for ln in lines if ln.rstrip("\r\n") != MARKER]
+
+# Drop extra blank tail if we stripped the only body line before it
+while len(out) > 2 and out[-1].strip() == "" and out[-2].strip() == "":
+    out.pop()
+
+new_text = "".join(out)
+first_line = next((ln.strip() for ln in out if ln.strip()), "")
+if not first_line:
+    print("commit-msg hook: refusal — commit message became empty.", file=sys.stderr)
+    sys.exit(1)
+
+if new_text != text:
+    msg_path.write_text(new_text, encoding="utf-8")
+
+sys.exit(0)
