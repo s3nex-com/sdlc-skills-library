@@ -8,6 +8,32 @@ sdlc-skills-library augments Claude Code with structured guidance, decision-maki
 
 Skills trigger automatically when your request matches their purpose, or can be invoked explicitly. The orchestrator manages the full pipeline, selects an operating mode based on your context, and activates domain **tracks** (Fintech, Healthcare, SaaS B2B, etc.) that overlay mandatory skills and tighter gates where the domain demands them.
 
+### Clone and keep this repo updated
+
+SSH (recommended if your GitHub SSH key is set up):
+
+```bash
+git clone git@github.com:s3nex-com/sdlc-skills-library.git
+cd sdlc-skills-library
+```
+
+HTTPS:
+
+```bash
+git clone https://github.com/s3nex-com/sdlc-skills-library.git
+cd sdlc-skills-library
+```
+
+On a machine that already has a clone, sync `master` with the remote:
+
+```bash
+git fetch origin
+git checkout master
+git pull --ff-only origin master
+```
+
+If `git pull --ff-only` refuses, you have local commits or merges on top of old `master`. See [Git docs on diverged branches](https://git-scm.com/docs/git-pull#_discussion) — typically `git stash` (or branch your work), reset to `origin/master`, then re-apply.
+
 ## Structure
 
 ```
@@ -24,7 +50,11 @@ docs/
 ├── tracks.md          — full guide to domain tracks
 ├── skill-triggers.md  — natural language phrases that activate each skill / track
 ├── skill-log.md       — append-only execution audit trail (created on first run)
-└── sdlc-status.md     — current pipeline stage and status (created on first run)
+├── sdlc-status.md     — current pipeline stage and status (created on first run)
+├── health-report.md   — health report authoring notes
+└── improvements/       — backlog / design docs (library extensions not yet enforced by CI)
+    ├── README.md
+    └── skill-library-validation/plan.md  — methodology + example scenarios for validating skills at runtime
 ```
 
 ## Operating modes
