@@ -1,0 +1,58 @@
+id: S-21
+name: db-migration-nullable-backfill
+description: >-
+  Adding a NOT NULL column to a 2.3M-row production table with a backfill →
+  expand/contract migration narrative with SQL per step and rollback plan.
+tag: C
+skill: database-migration
+skill_directory: skills/phase2/database-migration/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We need to add a non-nullable column `billing_plan_id UUID NOT NULL DEFAULT NULL`
+  to our `users` table. The table has 2.3 million rows in production. All existing
+  users should be assigned our free plan:
+    billing_plan_id = '550e8400-e29b-41d4-a716-446655440000'
+
+  PostgreSQL 15. We run on AWS RDS. The table takes roughly 800 writes/second
+  at peak.
+
+  Walk me through the migration strategy including:
+  - The exact SQL for each step in sequence
+  - How to avoid a full table lock
+  - The backfill approach for existing rows
+  - Rollback steps if something goes wrong after each phase
+  - Any application-level changes needed during the transition
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase2/database-migration/SKILL.md
+expected_primary_skill: database-migration
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "Step 1"
+      - "backfill"
+      - "rollback"
+    required_phrases:
+      - "expand"
+      - "NOT NULL"
+      - "lock"
+      - "backfill"
+      - "rollback"
+      - "CONCURRENTLY"
+    forbidden_phrases:
+      - "DROP TABLE"
+      - "ALTER TABLE users ALTER COLUMN billing_plan_id SET NOT NULL"
+  rubric_id: null
+notes: >-
+  Validates that the response uses the expand/contract pattern (add nullable
+  first, backfill, then add constraint), does not recommend a single-step
+  ALTER that locks the table at this row count, explicitly covers rollback
+  per phase, and recommends CONCURRENTLY for any index creation. The
+  forbidden phrase "ALTER TABLE users ALTER COLUMN billing_plan_id SET NOT NULL"
+  as a standalone first step would indicate the dangerous single-lock approach.
+  The script migration_risk.py can be wired as a secondary oracle once artefact
+  extraction is implemented.

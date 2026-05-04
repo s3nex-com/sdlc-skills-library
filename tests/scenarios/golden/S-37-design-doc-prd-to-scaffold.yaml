@@ -1,0 +1,69 @@
+id: S-37
+name: design-doc-prd-to-scaffold
+description: >-
+  Skeletal PRD + ADR excerpt + API summary → DESIGN.md scaffold with explicit
+  risks and a gap list for unresolved questions. Skill must not invent endpoints
+  not in the inputs.
+tag: C
+skill: design-doc-generator
+skill_directory: skills/phase1/design-doc-generator/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Generate a DESIGN.md scaffold from these inputs.
+
+  === PRD EXCERPT ===
+  Goal: Async export service for large dataset downloads (up to 5M rows).
+  Key requirements:
+  - CSV and Excel output formats
+  - Email notification to user on job completion
+  - 30-day retention of export history
+  Non-functional:
+  - p99 completion < 5 minutes for exports up to 1M rows
+  - GDPR data residency: EU region only for EU users
+  Open question: Do we need real-time progress updates in the UI?
+
+  === ADR-004 EXCERPT ===
+  Decision: Use a message queue (SQS) for export job dispatch.
+  Rationale: Decouples submission from processing; allows horizontal scaling
+             of workers without blocking the API tier.
+  Status: Accepted.
+
+  === API CONTRACT SUMMARY ===
+  POST /exports — submit export job
+  GET /exports/{id} — poll job status
+  GET /exports/{id}/download — pre-signed URL redirect to file
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/design-doc-generator/SKILL.md
+expected_primary_skill: design-doc-generator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "Architecture"
+      - "Data Model"
+      - "API"
+      - "Security"
+      - "NFR"
+      - "Risks"
+      - "Open Questions"
+    required_phrases:
+      - "SQS"
+      - "GDPR"
+      - "p99"
+      - "pre-signed"
+      - "progress"
+    forbidden_phrases:
+      - "DELETE /exports"
+      - "PATCH /exports"
+      - "PUT /exports"
+  rubric_id: null
+notes: >-
+  Validates that the design doc scaffold covers all major sections, references
+  ADR-004 and its SQS decision, treats the GDPR data residency as a security
+  and infrastructure constraint, and surfaces the open UI progress question as
+  an explicit gap — not an invented decision. Forbidden phrases catch invented
+  endpoints not present in the API contract summary.

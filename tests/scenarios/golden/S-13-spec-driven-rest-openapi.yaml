@@ -1,0 +1,65 @@
+id: S-13
+name: spec-driven-rest-openapi
+description: >-
+  REST resource description with pagination and errors → OpenAPI YAML fragment.
+  Tool-backed oracle: output extracted and piped through validate_openapi.py.
+tag: C
+skill: specification-driven-development
+skill_directory: skills/phase1/specification-driven-development/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Generate an OpenAPI 3.1 YAML fragment for the following REST resource.
+
+  Resource: Export Jobs
+  Base path: /exports
+
+  Endpoints:
+  - POST /exports — create a new export job
+      Request body: { dataset_id: string (required), format: "csv"|"xlsx" (required),
+                      filters: object (optional) }
+      Responses: 202 Accepted with { job_id: string, status: "queued" },
+                 400 Bad Request with error detail, 422 Unprocessable Entity
+
+  - GET /exports — list export jobs for the authenticated user
+      Query params: status (optional, enum: queued|processing|done|failed),
+                    page (integer, default 1), per_page (integer, default 20, max 100)
+      Responses: 200 with paginated list { items: [], total: int, page: int, per_page: int },
+                 401 Unauthorized
+
+  - GET /exports/{job_id} — get job status
+      Responses: 200 with full job object, 404 Not Found
+
+  - GET /exports/{job_id}/download — get pre-signed download URL
+      Responses: 302 redirect to pre-signed URL, 404, 409 Conflict (job not done yet)
+
+  Include reusable components for the error schema and the job object schema.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/specification-driven-development/SKILL.md
+expected_primary_skill: specification-driven-development
+oracle:
+  kind: tool_backed
+  script: skills/phase1/specification-driven-development/scripts/validate_openapi.py
+  structure_rules:
+    required_sections:
+      - "openapi:"
+      - "paths:"
+      - "components:"
+    required_phrases:
+      - "/exports"
+      - "202"
+      - "400"
+      - "404"
+      - "pagination"
+    forbidden_phrases: []
+  rubric_id: null
+notes: >-
+  The harness must extract the YAML code block from the model response, write it
+  to tmp/S-13-output.yaml, and run validate_openapi.py against it. Exit code 0
+  is a pass; non-zero is a fail with script output as the failure detail.
+  Structure rules are checked in addition to the script — they catch obvious
+  omissions before the script even runs. The 302 redirect response for the
+  download endpoint and the 409 Conflict are specifically worth asserting,
+  as they are easy to omit.

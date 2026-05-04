@@ -1,0 +1,70 @@
+id: S-29
+name: code-review-diff-ci-failure
+description: >-
+  Code diff plus CI failure log → prioritised review feedback with consistent
+  severity labels. CI failures must be treated as BLOCKER-class items.
+tag: C
+skill: code-review-quality-gates
+skill_directory: skills/phase2/code-review-quality-gates/
+mode: lean
+tracks: []
+workflow_path: null
+user_prompt: |
+  Review this PR diff and CI failure. Give me prioritised feedback.
+
+  === DIFF ===
+  diff --git a/src/payments/processor.py b/src/payments/processor.py
+  index 3a1b2c4..8d9e0f1 100644
+  --- a/src/payments/processor.py
+  +++ b/src/payments/processor.py
+  @@ -45,6 +45,24 @@ class PaymentProcessor:
+  +    def charge(self, amount: int, card_token: str, metadata: dict = None):
+  +        if amount <= 0:
+  +            raise ValueError("Amount must be positive")
+  +        payload = {
+  +            "amount": amount,
+  +            "currency": "usd",
+  +            "source": card_token,
+  +            "metadata": metadata or {}
+  +        }
+  +        response = requests.post(
+  +            f"{self.base_url}/charges",
+  +            json=payload,
+  +            headers={"Authorization": f"Bearer {self.api_key}"}
+  +        )
+  +        return response.json()
+
+  === CI FAILURE ===
+  FAILED tests/test_processor.py::test_charge_handles_network_error - AssertionError:
+    Expected requests.exceptions.ConnectionError to be caught and re-raised as
+    PaymentNetworkError, got raw exception propagating to caller.
+
+  FAILED tests/test_processor.py::test_charge_logs_response_status - AttributeError:
+    'PaymentProcessor' object has no attribute 'logger'
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase2/code-review-quality-gates/SKILL.md
+expected_primary_skill: code-review-quality-gates
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "BLOCKER"
+    required_phrases:
+      - "network"
+      - "logger"
+      - "exception"
+      - "test"
+    forbidden_phrases:
+      - "LGTM"
+      - "looks good"
+      - "ship it"
+  rubric_id: null
+notes: >-
+  Validates that the review labels the two CI failures as BLOCKER (or equivalent
+  highest-severity label), addresses both failing test cases specifically (network
+  error handling and missing logger), and does not rubber-stamp the diff. The
+  missing error handling (bare requests.post with no exception catch) and the
+  hardcoded "usd" currency should also appear as lower-severity items. Lean mode
+  means the feedback should be concise — not exhaustive line-by-line commentary.
