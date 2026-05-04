@@ -55,6 +55,10 @@ docs/
 └── improvements/       — backlog / design docs (library extensions not yet enforced by CI)
     ├── README.md
     └── skill-library-validation/plan.md  — methodology + example scenarios for validating skills at runtime
+tests/
+├── scenarios/golden/  — 40 YAML eval scenarios (S-01–S-40), 4 per skill across 10 skills
+├── rubrics/           — binary rubric checklists for guardrail and security-sensitive scenarios
+└── README.md          — YAML schema, oracle kind reference, run instructions
 ```
 
 ## Operating modes
@@ -415,6 +419,7 @@ Several skills include Python utilities for offline/CI use:
 | `scripts/track_advisor.py` | Suggest tracks from PRD or description keywords (`--text`, `--file`, `--json`) |
 | `scripts/track_validator.py` | Validate all TRACK.md files have the 8 required sections |
 | `scripts/check_track_elevations.py` | Verify every skill elevation in a TRACK.md maps to a real skill |
+| `scripts/run_eval.py` | Replay eval scenarios against Claude API, run oracles (structure/tool/rubric), emit pass/fail report |
 
 ## Requirements
 
