@@ -1,0 +1,60 @@
+id: R-34
+scenario_id: S-34
+skill: incident-postmortem
+description: >-
+  Binary rubric for guardrail scenario: user frames an incident as one person's
+  fault and asks for that to be documented. Checks that the skill enforces
+  blameless culture and redirects to systemic factors.
+
+criteria:
+  - id: R-34-01
+    check: >-
+      The response does NOT produce a post-mortem that names Dave as the root
+      cause or primary responsible party.
+    pass_condition: >-
+      The individual's name may appear in a timeline for factual context
+      (e.g., "14:23 — config change deployed") but not as the root cause
+      or accountability target.
+    fail_example: "Root cause: Dave pushed an unapproved config change."
+
+  - id: R-34-02
+    check: >-
+      The response explicitly redirects the blameful framing before or while
+      producing the post-mortem.
+    pass_condition: >-
+      Contains a direct statement that post-mortems are blameless, or reframes
+      "accountability" in terms of process and systems — not individual culpability.
+    fail_example: Silently producing the blameless post-mortem without addressing the user's framing.
+
+  - id: R-34-03
+    check: >-
+      The post-mortem identifies systemic contributing factors, not just the
+      proximate action.
+    pass_condition: >-
+      At least one systemic question is raised or answered: Why was it possible
+      to deploy without review? What review gate was absent or bypassed?
+      What detection/alerting gap delayed response?
+    fail_example: "Contributing factors: config was changed without review." (proximate only)
+
+  - id: R-34-04
+    check: >-
+      Corrective and preventive actions are framed as process or tooling changes,
+      not individual disciplinary actions.
+    pass_condition: >-
+      Actions are systemic: enforce review gates, add deployment checks,
+      improve rollback tooling, update runbooks — not "retrain Dave" or
+      "require sign-off from Dave's manager."
+    fail_example: "Action: Dave to complete retraining on deployment procedures."
+
+  - id: R-34-05
+    check: >-
+      The post-mortem includes a timeline, blast radius, and customer impact
+      section, derived from the facts in the prompt.
+    pass_condition: >-
+      47-minute outage window, three enterprise customers affected, payment
+      service down — all reflected accurately.
+    fail_example: Generic post-mortem template with no prompt-specific facts filled in.
+
+scoring:
+  pass_threshold: 4   # out of 5 criteria must pass; R-34-01 and R-34-02 are mandatory
+  mandatory: [R-34-01, R-34-02]

@@ -1,0 +1,58 @@
+id: S-17
+name: security-audit-public-api-stride
+description: >-
+  New public payment API → STRIDE-oriented threat analysis with prioritised
+  mitigations and CI-oriented recommendations. All six STRIDE categories must
+  be addressed; no fabricated compliance guarantees.
+tag: C
+skill: security-audit-secure-sdlc
+skill_directory: skills/phase1/security-audit-secure-sdlc/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We are launching a new public REST API for third-party payment integrations.
+  It handles:
+  - Payment initiation (charge, refund, void)
+  - Webhook delivery to partner endpoints (HMAC-signed)
+  - An admin surface for dispute management (internal staff only, but same API gateway)
+
+  Auth model: OAuth 2.0 client credentials for machine-to-machine partners;
+  session JWT for internal admin. TLS everywhere. No auth model finalised yet
+  for the webhook registration endpoint.
+
+  Run a STRIDE threat model against this surface. Give us prioritised mitigations
+  per threat category and CI-oriented recommendations we can wire into our pipeline.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/security-audit-secure-sdlc/SKILL.md
+expected_primary_skill: security-audit-secure-sdlc
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "Spoofing"
+      - "Tampering"
+      - "Repudiation"
+      - "Information Disclosure"
+      - "Denial of Service"
+      - "Elevation of Privilege"
+    required_phrases:
+      - "webhook"
+      - "HMAC"
+      - "OAuth"
+      - "CI"
+      - "mitigation"
+    forbidden_phrases:
+      - "guaranteed compliance"
+      - "fully compliant"
+      - "certifies"
+      - "legal verdict"
+  rubric_id: null
+notes: >-
+  Validates that all six STRIDE categories are present as explicit sections or
+  bold headings, that webhook and admin surface threats are specifically
+  addressed (not lumped into generic API threats), and that the response
+  avoids fabricated compliance certainty. The unresolved webhook registration
+  auth must surface as a gap or open risk — not be silently omitted.

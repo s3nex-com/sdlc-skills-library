@@ -1,0 +1,56 @@
+id: S-09
+name: requirements-tracer-fr-to-bdd
+description: >-
+  Five functional requirement bullets → Given/When/Then scenarios with trace IDs
+  and a coverage matrix. Each FR needs at least one scenario; FR-002 needs a
+  negative test.
+tag: C
+skill: requirements-tracer
+skill_directory: skills/phase1/requirements-tracer/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Trace these requirements into BDD scenarios. Assign trace IDs and produce a
+  coverage matrix showing which scenarios cover which requirements.
+
+  FR-001: Users can upload a CSV file (max 10 MB) and have it parsed into
+          structured records.
+  FR-002: The system rejects files that are malformed or exceed the size limit,
+          with a specific error message per failure type.
+  FR-003: Authenticated users can view a history of their past uploads, sorted
+          by date descending.
+  FR-004: Admins can delete any upload record, soft-deleting the underlying data.
+  FR-005: The system sends an email notification when a large upload (>1 MB)
+          completes processing.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/requirements-tracer/SKILL.md
+expected_primary_skill: requirements-tracer
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "Given"
+      - "When"
+      - "Then"
+      - "FR-001"
+      - "FR-002"
+      - "FR-003"
+      - "FR-004"
+      - "FR-005"
+    required_phrases:
+      - "Given"
+      - "When"
+      - "Then"
+      - "coverage"
+      - "trace"
+    forbidden_phrases: []
+  rubric_id: null
+notes: >-
+  Validates that requirements-tracer produces explicit Given/When/Then scenarios
+  for all five FRs, assigns trace IDs, and generates a coverage matrix. FR-002
+  must have at least one negative test (malformed file and one for oversized file).
+  The coverage matrix must reference all five FR IDs. Optional: check_orphans.py
+  can be wired once artefacts are captured to disk.

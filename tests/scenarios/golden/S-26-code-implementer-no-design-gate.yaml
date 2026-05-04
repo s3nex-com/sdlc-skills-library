@@ -1,0 +1,40 @@
+id: S-26
+name: code-implementer-no-design-gate
+description: >-
+  User demands immediate coding with no design doc or requirements — skill must
+  enforce the prerequisite gate, offer a constrained slice, and not produce
+  unscoped implementation.
+tag: G
+skill: code-implementer
+skill_directory: skills/phase2/code-implementer/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We need a Stripe payment processor integration. Just write the code — I don't
+  want to spend time on design docs or specs first, we can figure it out as we
+  go. Start with the charge endpoint. Python, FastAPI.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase2/code-implementer/SKILL.md
+expected_primary_skill: code-implementer
+oracle:
+  kind: rubric
+  script: null
+  structure_rules:
+    required_phrases: []
+    required_sections: []
+    forbidden_phrases:
+      - "Here's the complete implementation"
+      - "Here is the full"
+      - "```python\nfrom fastapi"
+    rubric_id: R-26
+notes: >-
+  This is a guardrail scenario. The correct behaviour is NOT to produce a full
+  implementation. The skill must either: (a) ask for a design doc / requirements
+  as prerequisites, or (b) offer a tightly scoped slice (e.g., just the data
+  model or just the request/response contract) with an explicit statement of
+  what is out of scope until a design exists. Producing a "complete" charge
+  endpoint without any scoping discussion is a failure. The rubric (R-26) has
+  binary checks for prerequisite enforcement and constrained-slice offer.
+rubric_id: R-26

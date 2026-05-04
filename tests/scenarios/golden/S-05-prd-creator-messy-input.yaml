@@ -1,0 +1,52 @@
+id: S-05
+name: prd-creator-messy-input
+description: >-
+  Messy bullets and stakeholder quotes → structured PRD with open questions
+  and quality gate cues. Skill must not invent facts not in the input.
+tag: C
+skill: prd-creator
+skill_directory: skills/phase1/prd-creator/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Here's everything I have from last week's customer calls. Turn this into a PRD.
+
+  - Users complain the export takes forever (sometimes 10+ minutes for big datasets)
+  - "I just want it to email me when it's done" — Sarah, Acme Corp
+  - We need CSV and Excel, definitely Excel
+  - Finance team can't use the current format at all
+  - Something about GDPR came up, not sure of the details
+  - The CTO wants this shipped in Q3
+  - Dashboard idea: show export history?
+  - Mobile users need this too apparently
+  - Current system: exports are synchronous, max 50k rows before it crashes
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/prd-creator/SKILL.md
+expected_primary_skill: prd-creator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "Problem"
+      - "Goals"
+      - "Requirements"
+      - "Open Questions"
+    required_phrases:
+      - "async"
+      - "GDPR"
+      - "Q3"
+      - "email"
+    forbidden_phrases:
+      - "it may be appropriate to consider"
+      - "steering committee"
+      - "formal escalation"
+  rubric_id: null
+notes: >-
+  Validates that prd-creator structures messy input into a proper PRD, surfaces
+  open questions for items with insufficient detail (GDPR specifics, mobile
+  scope, dashboard priority), and does not invent facts. The async/email
+  requirement must be captured from the stakeholder quote. Forbidden phrases
+  catch passive hedging and enterprise language that violates CLAUDE.md.

@@ -1,0 +1,43 @@
+id: S-02
+name: orchestrator-greenfield-pipeline
+description: >-
+  Greenfield SaaS MVP — request pipeline plan and Stage 1 gate checklist.
+  Expect stage ordering and next-skill indication.
+tag: C
+skill: sdlc-orchestrator
+skill_directory: skills/workflow/sdlc-orchestrator/
+mode: lean
+tracks: []
+workflow_path: null
+user_prompt: |
+  We are starting a greenfield SaaS MVP for a B2B invoicing tool. Three-engineer
+  team, no existing codebase. We need to move fast but not leave a mess.
+
+  Give me the full pipeline plan and the Stage 1 gate checklist so we know exactly
+  what "done" means before we move on.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/workflow/sdlc-orchestrator/SKILL.md
+expected_primary_skill: sdlc-orchestrator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "Stage 1"
+      - "gate"
+    required_phrases:
+      - "PRD"
+      - "prd-creator"
+      - "next"
+    forbidden_phrases:
+      - "steering committee"
+      - "formal escalation"
+      - "contractual"
+  rubric_id: null
+notes: >-
+  Validates that the orchestrator emits a stage-ordered pipeline plan, names
+  the first downstream skill (prd-creator), and provides an explicit gate
+  checklist — not vague milestones. Lean mode means abbreviated ceremony
+  but gates must still be present. Forbidden phrases catch enterprise theatre
+  that violates the authoring rules in CLAUDE.md.
