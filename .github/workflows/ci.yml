@@ -65,3 +65,4 @@ jobs:
           python3 scripts/check_track_elevations.py --help
           python3 scripts/check_reference_links.py --help
           python3 scripts/check_index.py --help
+          python3 scripts/run_eval.py --help
