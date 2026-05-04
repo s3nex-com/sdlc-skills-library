@@ -1,0 +1,62 @@
+id: S-06
+name: prd-creator-openapi-redirect
+description: >-
+  User pastes an OpenAPI spec and labels it as a PRD. Skill must distinguish
+  product intent from API contract and redirect to specification-driven-development.
+tag: G
+skill: prd-creator
+skill_directory: skills/phase1/prd-creator/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Here's our PRD for the new notifications feature. Can you review it and tell
+  me if anything is missing?
+
+  ---
+  openapi: 3.1.0
+  info:
+    title: Notifications API
+    version: 1.0.0
+  paths:
+    /notifications:
+      get:
+        summary: List notifications for the authenticated user
+        parameters:
+          - name: unread_only
+            in: query
+            schema:
+              type: boolean
+        responses:
+          '200':
+            description: List of notifications
+    /notifications/{id}/read:
+      post:
+        summary: Mark a notification as read
+        responses:
+          '204':
+            description: Marked as read
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/prd-creator/SKILL.md
+expected_primary_skill: prd-creator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "specification"
+      - "product"
+      - "requirement"
+    forbidden_phrases:
+      - "## Goals"
+      - "## Success Metrics"
+      - "## Non-functional Requirements"
+  rubric_id: null
+notes: >-
+  Validates that prd-creator correctly identifies that an OpenAPI spec is not a
+  PRD — it describes a transport contract, not product intent. The response must
+  explain the distinction (product goals, user value, business context are missing)
+  and suggest specification-driven-development for the contract work. Forbidden
+  phrases catch it blindly writing a PRD from the OpenAPI spec instead of redirecting.

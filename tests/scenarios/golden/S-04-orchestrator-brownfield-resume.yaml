@@ -1,0 +1,48 @@
+id: S-04
+name: orchestrator-brownfield-resume
+description: >-
+  Brownfield refactor of an existing service — where to resume the pipeline.
+  Skill must detect the stage, name prerequisite artefacts, and not restart
+  from Stage 1 as if it were greenfield.
+tag: C
+skill: sdlc-orchestrator
+skill_directory: skills/workflow/sdlc-orchestrator/
+mode: standard
+tracks: []
+workflow_path: brownfield
+user_prompt: |
+  We have an existing order management service that we need to significantly
+  refactor — splitting it into two microservices (orders and fulfilment).
+  The service has been running in production for two years. We have:
+  - No PRD for the refactor (just an engineering decision)
+  - No DESIGN.md yet
+  - Existing OpenAPI spec (v2.3, last updated 8 months ago, probably stale)
+  - ~60% test coverage
+  - No ADR for the split decision
+
+  Where do we start the pipeline and what do we need to produce before we
+  can start coding?
+context:
+  artifact_fixture: null
+  skill_load_path: skills/workflow/sdlc-orchestrator/SKILL.md
+expected_primary_skill: sdlc-orchestrator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "ADR"
+      - "DESIGN"
+      - "spec"
+      - "brownfield"
+    forbidden_phrases:
+      - "Start from Stage 1"
+      - "start fresh"
+  rubric_id: null
+notes: >-
+  Validates that the orchestrator detects brownfield context, routes to the
+  right entry point (not Stage 1 from scratch), and names the specific
+  missing artefacts: an ADR for the split decision, a DESIGN.md, and a
+  spec audit before coding starts. "Start from Stage 1" or "start fresh"
+  as a generic recommendation would miss the brownfield context entirely.

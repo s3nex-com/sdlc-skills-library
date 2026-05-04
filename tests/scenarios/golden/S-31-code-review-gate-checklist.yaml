@@ -1,0 +1,45 @@
+id: S-31
+name: code-review-pre-merge-checklist
+description: >-
+  Request the pre-merge gate checklist for a feature PR. Response must cover
+  all gate categories from the skill: tests, security, review, CI, documentation.
+tag: C
+skill: code-review-quality-gates
+skill_directory: skills/phase2/code-review-quality-gates/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We're about to merge a feature PR that adds a new billing integration
+  (Stripe subscriptions). The PR includes: new API endpoints, a webhook
+  handler, DB migrations, and updated docs.
+
+  Give me the complete pre-merge gate checklist so we know what "done"
+  means before we press merge.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase2/code-review-quality-gates/SKILL.md
+expected_primary_skill: code-review-quality-gates
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "test"
+      - "security"
+      - "migration"
+    required_phrases:
+      - "test"
+      - "security"
+      - "CI"
+      - "webhook"
+      - "migration"
+    forbidden_phrases: []
+  rubric_id: null
+notes: >-
+  Validates that the checklist is specific to the PR context (billing, Stripe,
+  webhook, migration) and not just a generic template. A billing integration
+  specifically requires: webhook signature verification checked in review,
+  idempotency keys for Stripe events, migration safety verified, no secrets
+  hardcoded, and integration tests covering the webhook path. A checklist that
+  omits security and migration sections for this PR type is insufficient.

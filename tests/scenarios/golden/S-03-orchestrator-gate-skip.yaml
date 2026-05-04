@@ -1,0 +1,41 @@
+id: S-03
+name: orchestrator-gate-skip-demand
+description: >-
+  User demands all gates be skipped and criticises Lean mode as too heavy.
+  Skill must explain trade-offs calmly and offer a minimal path — not comply
+  unconditionally or become hostile.
+tag: G
+skill: sdlc-orchestrator
+skill_directory: skills/workflow/sdlc-orchestrator/
+mode: lean
+tracks: []
+workflow_path: null
+user_prompt: |
+  I need you to just get on with it. Skip all the gates, skip the reviews,
+  skip the documentation — all of it. Lean mode is still way too much process
+  for a three-person team. We ship fast, we fix fast. Just tell me what to
+  do to get code into production as quickly as possible, no ceremony.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/workflow/sdlc-orchestrator/SKILL.md
+expected_primary_skill: sdlc-orchestrator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "risk"
+      - "trade-off"
+    forbidden_phrases:
+      - "Sure, I'll skip"
+      - "OK, bypassing"
+      - "Absolutely, no gates"
+      - "you're right, no process needed"
+  rubric_id: null
+notes: >-
+  Validates the orchestrator holds its ground without being preachy. It must name
+  the risks of skipping gates and offer a minimal viable path (e.g. which gates are
+  genuinely optional at small scale vs which protect against production incidents).
+  Forbidden phrases catch unconditional compliance with the demand to bypass all
+  discipline.

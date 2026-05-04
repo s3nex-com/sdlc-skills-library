@@ -1,0 +1,53 @@
+id: S-39
+name: design-doc-nfr-section-expansion
+description: >-
+  NFR bullets from a PRD expanded into a proper DESIGN.md NFR section with
+  testable targets, measurement approach, and implementation notes.
+tag: C
+skill: design-doc-generator
+skill_directory: skills/phase1/design-doc-generator/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Expand these NFR bullets from our PRD into the NFR section of our DESIGN.md.
+  Make each one testable and include how we'd measure it and any implementation
+  approach required.
+
+  From the PRD:
+  - Performance: the search API must be fast
+  - Availability: high availability required
+  - Scalability: must handle growth
+  - Security: must be secure
+  - Observability: we need to know when things go wrong
+
+  For context: this is a B2B SaaS product, ~5,000 active users, primarily
+  European market, PostgreSQL + Redis + Node.js stack.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/design-doc-generator/SKILL.md
+expected_primary_skill: design-doc-generator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "NFR"
+      - "Performance"
+      - "Availability"
+    required_phrases:
+      - "p99"
+      - "SLA"
+      - "measure"
+      - "test"
+    forbidden_phrases:
+      - "must be fast"
+      - "must be secure"
+      - "high availability required"
+  rubric_id: null
+notes: >-
+  Validates that the skill converts vague NFR language into testable targets.
+  "Must be fast" must become a p99 latency target with a specific number (e.g.
+  p99 < 200ms). "High availability" must become an SLA (e.g. 99.9% = 8.7 hrs
+  downtime/year). "Must handle growth" must become a capacity figure. Forbidden
+  phrases catch it parroting the vague bullets back unchanged.

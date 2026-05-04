@@ -1,0 +1,53 @@
+id: S-11
+name: requirements-tracer-mid-flight-fr
+description: >-
+  New FR added mid-flight to an existing traced set. Skill must produce a scope
+  delta: new scenarios, impact on existing coverage, updated trace IDs.
+tag: C
+skill: requirements-tracer
+skill_directory: skills/phase1/requirements-tracer/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We already have these traced requirements in flight:
+
+  FR-001 (TC-001, TC-002): Users can search products by keyword.
+  FR-002 (TC-003): Search results are paginated (20 per page).
+  FR-003 (TC-004, TC-005): Users can filter results by category and price range.
+
+  The product team has just added a new requirement mid-sprint:
+
+  FR-004 (NEW): Search results must be sorted by relevance by default, with
+  the option to sort by price (asc/desc) and newest first.
+
+  Produce: the new BDD scenarios for FR-004, trace IDs for them, and an
+  impact assessment on the existing scenarios (does FR-004 affect any of
+  TC-001 through TC-005?).
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/requirements-tracer/SKILL.md
+expected_primary_skill: requirements-tracer
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "FR-004"
+    required_phrases:
+      - "TC-"
+      - "impact"
+      - "sort"
+      - "relevance"
+      - "Given"
+      - "When"
+      - "Then"
+    forbidden_phrases: []
+  rubric_id: null
+notes: >-
+  Validates that requirements-tracer handles mid-flight scope changes correctly:
+  produces new BDD scenarios with fresh TC IDs, assesses whether the sort
+  requirement changes the existing pagination/filter test expectations (TC-003
+  through TC-005 may need updates if sort order affects pagination), and flags
+  the scope delta clearly rather than silently adding scenarios without impact
+  analysis.

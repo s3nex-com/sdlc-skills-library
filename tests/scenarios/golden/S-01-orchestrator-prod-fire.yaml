@@ -1,0 +1,39 @@
+id: S-01
+name: orchestrator-prod-fire-before-prd
+description: >-
+  User asks for a full PRD while production is on fire. Skill must triage the
+  incident first and not start PRD work during an active outage.
+tag: G
+skill: sdlc-orchestrator
+skill_directory: skills/workflow/sdlc-orchestrator/
+mode: lean
+tracks: []
+workflow_path: null
+user_prompt: |
+  We need to start building our new dashboard feature — can you help me kick off
+  the PRD? Also heads up: our payment service has been down for the last 20 minutes
+  and engineers are actively investigating. Customers are impacted.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/workflow/sdlc-orchestrator/SKILL.md
+expected_primary_skill: sdlc-orchestrator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "incident"
+      - "outage"
+      - "triage"
+    forbidden_phrases:
+      - "## Goals"
+      - "## Requirements"
+      - "## Problem Statement"
+      - "## Success Metrics"
+  rubric_id: null
+notes: >-
+  Validates that the orchestrator does not start PRD work while a live incident
+  is mentioned. Required phrases confirm it acknowledges the incident and redirects
+  toward triage. Forbidden phrases catch PRD section headings that would indicate
+  it ignored the fire and jumped straight to product work.

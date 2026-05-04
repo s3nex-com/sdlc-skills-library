@@ -1,0 +1,66 @@
+id: S-14
+name: spec-driven-openapi-validate-script
+description: >-
+  Webhook subscription resource → OpenAPI 3.1 YAML. Tool-backed oracle extracts
+  the YAML block and pipes it through validate_openapi.py --fail-on-critical.
+  Tests the automated validation pipeline end-to-end.
+tag: K
+skill: specification-driven-development
+skill_directory: skills/phase1/specification-driven-development/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Generate an OpenAPI 3.1 YAML spec for the following resource.
+
+  Resource: Webhook Subscriptions
+  Base path: /webhooks
+
+  Endpoints:
+  - POST /webhooks — register a new webhook subscription
+      Request body: { url: string (required, must be https), events: array of strings (required,
+                      min 1 item, enum: payment.completed|payment.failed|refund.issued|dispute.opened),
+                      secret: string (optional, for HMAC signing) }
+      Responses: 201 Created with { id: string, url: string, events: [], created_at: datetime },
+                 400 Bad Request, 422 Unprocessable Entity
+
+  - GET /webhooks — list subscriptions for authenticated account
+      Responses: 200 with array of subscription objects, 401 Unauthorized
+
+  - DELETE /webhooks/{id} — remove a subscription
+      Responses: 204 No Content, 404 Not Found, 401 Unauthorized
+
+  - POST /webhooks/{id}/test — send a test event to the endpoint
+      Responses: 202 Accepted with { delivery_id: string },
+                 404 Not Found, 422 (endpoint unreachable)
+
+  Use $ref for all response schemas. Include an operationId for every operation.
+  Add a 500 response with an error schema to every endpoint.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/specification-driven-development/SKILL.md
+expected_primary_skill: specification-driven-development
+oracle:
+  kind: tool_backed
+  script: skills/phase1/specification-driven-development/scripts/validate_openapi.py
+  artifact_lang: yaml
+  artifact_ext: yaml
+  structure_rules:
+    required_sections:
+      - "openapi:"
+      - "components:"
+    required_phrases:
+      - "/webhooks"
+      - "operationId"
+      - "201"
+      - "204"
+      - "500"
+    forbidden_phrases: []
+  rubric_id: null
+notes: >-
+  Different resource from S-13 (webhooks vs export jobs) to test the validation
+  pipeline on a distinct domain. The prompt explicitly requests operationId and
+  $ref usage — both are checked by validate_openapi.py. The harness extracts the
+  first YAML block, writes to tmp/artifacts/S-14-output.yaml, and runs the script
+  with --fail-on-critical. A missing operationId or inline complex schema is a
+  FAIL.

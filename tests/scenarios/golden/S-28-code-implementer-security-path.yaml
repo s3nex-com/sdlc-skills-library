@@ -1,0 +1,61 @@
+id: S-28
+name: code-implementer-security-sensitive-path
+description: >-
+  Security-sensitive path: admin action that deletes user data. Generated code
+  must show auth/authz checks, input validation, and audit logging — not just
+  the happy-path business logic.
+tag: K
+skill: code-implementer
+skill_directory: skills/phase2/code-implementer/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Implement the following endpoint from our DESIGN.md.
+
+  === DESIGN.md excerpt ===
+  ## Admin: Delete User Account
+
+  Endpoint: DELETE /admin/users/{user_id}
+
+  Security requirements:
+  - Caller must be authenticated (JWT)
+  - Caller must have role: admin
+  - Cannot delete own account
+  - Cannot delete another admin account (must be demoted first)
+
+  Behaviour:
+  - Soft-delete: set deleted_at timestamp, anonymise PII fields
+    (email → deleted_{user_id}@deleted, name → "Deleted User")
+  - Cascade: deactivate all active sessions for the user
+  - Emit audit log entry: who deleted whom, timestamp, reason (required field)
+  - Return 204 on success, 403 on auth failure, 404 if user not found,
+    409 if target is an admin
+
+  Language: Python / FastAPI. Assume SQLAlchemy ORM, JWT auth middleware
+  already wired. Use parameterised queries — no raw SQL.
+  ===
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase2/code-implementer/SKILL.md
+expected_primary_skill: code-implementer
+oracle:
+  kind: rubric
+  script: null
+  structure_rules:
+    required_phrases:
+      - "admin"
+      - "audit"
+      - "deleted_at"
+      - "403"
+    forbidden_phrases:
+      - "TODO: add auth"
+      - "# auth check here"
+  rubric_id: R-28
+notes: >-
+  Security-sensitive path test. The rubric (R-28) checks: auth present and not
+  deferred, self-delete guard, admin-on-admin guard, PII anonymisation correct,
+  audit log emitted with all required fields, no raw SQL, no hardcoded role
+  strings, error responses match the spec. Structure pre-checks catch the most
+  obvious omissions before rubric scoring.
+rubric_id: R-28

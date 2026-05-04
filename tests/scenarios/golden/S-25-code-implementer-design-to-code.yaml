@@ -1,0 +1,67 @@
+id: S-25
+name: code-implementer-design-to-code
+description: >-
+  Stub DESIGN.md provided — implement the described feature with tests alongside.
+  Validates that code-implementer produces implementation with unit tests and does
+  not skip the test-alongside gate.
+tag: C
+skill: code-implementer
+skill_directory: skills/phase2/code-implementer/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Implement Phase 1 from this DESIGN.md stub.
+
+  === DESIGN.md (excerpt) ===
+  ## Component: Rate Limiter
+
+  **Scope for Phase 1:** In-memory sliding window rate limiter.
+  Single class, no persistence, no Redis yet.
+
+  Interface:
+  ```python
+  class RateLimiter:
+      def __init__(self, max_requests: int, window_seconds: int): ...
+      def is_allowed(self, key: str) -> bool: ...
+      def reset(self, key: str) -> None: ...
+  ```
+
+  Rules:
+  - `is_allowed` returns True if the key has made fewer than `max_requests`
+    within the last `window_seconds`. Returns False and does NOT record the
+    request if the limit is exceeded.
+  - Thread-safe (use a lock).
+  - `reset` clears all recorded requests for a key.
+
+  NFRs: no external dependencies, Python 3.10+.
+  Phase 2 (out of scope here): Redis-backed distributed limiter.
+  ===
+
+  Implement the RateLimiter class and its unit tests.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase2/code-implementer/SKILL.md
+expected_primary_skill: code-implementer
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "def is_allowed"
+      - "def test_"
+      - "RateLimiter"
+      - "threading"
+    forbidden_phrases:
+      - "Phase 2"
+      - "Redis"
+  rubric_id: null
+notes: >-
+  Validates that code-implementer: (1) implements the exact interface from the
+  DESIGN.md, (2) produces unit tests alongside the implementation (not after
+  and not separately), (3) respects the phase boundary — Phase 2 Redis work must
+  not appear in the output. Threading/lock requirement must be visible in the
+  implementation. Note: full K-type validation (run tests in a fixture repo)
+  requires a test harness not yet implemented; this scenario uses structure
+  oracle as a proxy.

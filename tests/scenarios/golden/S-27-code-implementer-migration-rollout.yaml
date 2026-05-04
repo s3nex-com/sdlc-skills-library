@@ -1,0 +1,49 @@
+id: S-27
+name: code-implementer-migration-rollout-order
+description: >-
+  DB schema change + application code change deployed together. Skill must
+  produce the correct rollout ordering so neither change breaks the other
+  during deployment.
+tag: C
+skill: code-implementer
+skill_directory: skills/phase2/code-implementer/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We need to rename the `user_type` column in the `users` table to `account_type`.
+  The application reads and writes this column in several places.
+
+  We're deploying both the migration and the updated application code.
+  Our deployment process: deploy app to production, then run migrations
+  (we have a 5-minute overlap where both old and new app versions serve
+  traffic during the rolling deploy).
+
+  What is the correct sequence for this change to avoid a production error?
+  Include the migration SQL and the application-level changes needed.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase2/code-implementer/SKILL.md
+expected_primary_skill: code-implementer
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "backward"
+      - "deploy"
+      - "migration"
+      - "rollback"
+      - "phase"
+    forbidden_phrases:
+      - "rename the column directly"
+      - "ALTER TABLE users RENAME COLUMN user_type"
+  rubric_id: null
+notes: >-
+  Validates that code-implementer handles the dual-deployment sequencing problem
+  correctly. A direct rename with a rolling deploy causes errors: the old app
+  reads `user_type` (renamed column is gone) and the new app reads `account_type`
+  (old column still present). The correct approach: expand/contract — add
+  `account_type`, dual-write in app, migrate data, remove old column in a
+  separate release. Forbidden phrase catches the dangerous single-step rename.

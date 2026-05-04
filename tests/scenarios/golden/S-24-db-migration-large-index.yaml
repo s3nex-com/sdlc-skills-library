@@ -1,0 +1,42 @@
+id: S-24
+name: db-migration-large-index-concurrently
+description: >-
+  Adding an index to a large production table. Skill must recommend CONCURRENTLY,
+  explain lock behaviour, and provide rollback steps.
+tag: C
+skill: database-migration
+skill_directory: skills/phase2/database-migration/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We need to add an index on the `orders` table to speed up queries by
+  `customer_id` and `status`. The table has 12 million rows in production
+  and is write-heavy (~500 INSERTs/minute at peak).
+
+  PostgreSQL 15. What's the safest way to add this index without taking
+  the application down?
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase2/database-migration/SKILL.md
+expected_primary_skill: database-migration
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "CONCURRENTLY"
+      - "lock"
+      - "rollback"
+    forbidden_phrases:
+      - "CREATE INDEX ON orders"
+      - "CREATE INDEX orders_customer"
+  rubric_id: null
+notes: >-
+  Validates that the skill recommends CREATE INDEX CONCURRENTLY (not a plain
+  CREATE INDEX which takes a ShareLock), explains that CONCURRENTLY allows
+  concurrent writes during index build, and notes the trade-offs (slower build,
+  can fail without cleanup, cannot be run in a transaction). The forbidden phrases
+  catch a plain CREATE INDEX without CONCURRENTLY on a write-heavy table, which
+  would block production writes during the build.

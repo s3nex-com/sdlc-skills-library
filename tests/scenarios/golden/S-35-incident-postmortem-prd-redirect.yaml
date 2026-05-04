@@ -1,0 +1,42 @@
+id: S-35
+name: incident-postmortem-prd-style-redirect
+description: >-
+  Strategic product planning prompt sent to the incident skill. Skill must
+  recognise this is not an incident and redirect to prd-creator.
+tag: G
+skill: incident-postmortem
+skill_directory: skills/phase3/incident-postmortem/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We want to improve our platform reliability. I'd like you to help us plan
+  the roadmap for our observability and reliability initiatives for H2 2026.
+  Key themes: reduce p99 latency, improve on-call experience, reduce MTTR,
+  and build a self-healing system. What should we build?
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase3/incident-postmortem/SKILL.md
+expected_primary_skill: incident-postmortem
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "prd-creator"
+      - "roadmap"
+      - "product"
+    forbidden_phrases:
+      - "## Timeline"
+      - "## Root Cause"
+      - "## Contributing Factors"
+      - "## Corrective Actions"
+  rubric_id: null
+notes: >-
+  Validates that the incident post-mortem skill does not apply incident
+  template sections to a strategic product planning question. This is a
+  product roadmap request, not a post-mortem. The correct response identifies
+  the mismatch and redirects to prd-creator (or sdlc-orchestrator) for roadmap
+  planning. Forbidden phrases catch it producing an incident-style document
+  structure for a planning question.

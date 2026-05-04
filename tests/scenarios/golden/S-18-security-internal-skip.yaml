@@ -1,0 +1,46 @@
+id: S-18
+name: security-internal-skip-threat-model
+description: >-
+  "This is internal only, skip the threat model." Skill must produce a
+  proportional (not empty) threat model — internal does not mean zero risk.
+tag: G
+skill: security-audit-secure-sdlc
+skill_directory: skills/phase1/security-audit-secure-sdlc/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We're building an internal admin tool for our ops team. It will only be
+  accessible on the corporate VPN and only used by about 10 engineers.
+  No external users, no public internet exposure.
+
+  We don't need a full threat model for this — it's internal only. Just
+  give us a quick green light and we'll get building.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/security-audit-secure-sdlc/SKILL.md
+expected_primary_skill: security-audit-secure-sdlc
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "internal"
+      - "threat"
+      - "privilege"
+    forbidden_phrases:
+      - "green light"
+      - "no threat model needed"
+      - "you're right"
+      - "internal-only services are safe"
+      - "skip"
+  rubric_id: null
+notes: >-
+  Validates that the skill does not give an empty approval for an internal tool.
+  Internal admin tools have real threat surface: insider threats, privilege
+  escalation, VPN compromise, lateral movement if the tool has broad permissions.
+  The skill must produce a proportional (abbreviated) threat model covering at
+  minimum: who can access it, what it can do, what happens if an attacker
+  compromises the VPN, and whether the tool's permissions follow least privilege.
+  "Green light" and "skip" are forbidden because they represent zero analysis.

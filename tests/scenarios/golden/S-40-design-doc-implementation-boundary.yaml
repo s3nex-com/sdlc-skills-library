@@ -1,0 +1,45 @@
+id: S-40
+name: design-doc-implementation-boundary
+description: >-
+  User insists on putting a full implementation in the DESIGN.md. Skill must
+  enforce the boundary between design and implementation and redirect to
+  code-implementer.
+tag: G
+skill: design-doc-generator
+skill_directory: skills/phase1/design-doc-generator/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  I want the DESIGN.md to include the full implementation — all the code,
+  not just the design. Put the actual Python classes, the SQL migrations,
+  the API endpoint handlers, everything in the DESIGN.md. That way the
+  document is self-contained and we can just copy-paste from it.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/design-doc-generator/SKILL.md
+expected_primary_skill: design-doc-generator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "code-implementer"
+      - "design"
+      - "implementation"
+    forbidden_phrases:
+      - "class PaymentProcessor"
+      - "def handle_payment"
+      - "CREATE TABLE"
+      - "@app.post"
+      - "@router.post"
+  rubric_id: null
+notes: >-
+  Validates that design-doc-generator refuses to become a code dump. A DESIGN.md
+  contains interfaces, component diagrams, data models (as schema descriptions),
+  sequence flows, and NFRs — not production implementation code. The skill must
+  explain the purpose of the design document (enable independent review and
+  discussion before implementation) and redirect to code-implementer for the
+  actual code. Forbidden phrases catch production-grade class/function/SQL
+  definitions appearing in the design document.

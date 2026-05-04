@@ -1,0 +1,47 @@
+id: S-19
+name: security-supply-chain-sbom
+description: >-
+  Team asks about supply chain security for a Node.js + Python service about
+  to go to production. Response must cover SBOM, dependency integrity, and
+  practical CI recommendations at skill depth.
+tag: C
+skill: security-audit-secure-sdlc
+skill_directory: skills/phase1/security-audit-secure-sdlc/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We're about to go to production with a service that has:
+  - A Node.js frontend (React, ~180 npm dependencies)
+  - A Python backend (FastAPI, ~60 pip packages)
+  - Docker images built in CI (GitHub Actions)
+  - No current process for tracking what's in our dependencies
+
+  What do we need to put in place for supply chain security? We've heard
+  about SBOMs and Sigstore but don't know where to start. What's practical
+  for a small team going to production in two weeks?
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/security-audit-secure-sdlc/SKILL.md
+expected_primary_skill: security-audit-secure-sdlc
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "SBOM"
+      - "dependency"
+      - "CI"
+      - "lock"
+    forbidden_phrases:
+      - "two weeks is not enough"
+      - "you cannot ship"
+  rubric_id: null
+notes: >-
+  Validates that the skill gives actionable supply chain guidance at the team's
+  level: at minimum — lock files committed (package-lock.json, requirements.txt
+  pinned), automated vulnerability scanning in CI (npm audit, pip-audit or
+  Safety), and SBOM generation (cyclonedx-npm / cyclonedx-python). Sigstore/
+  cosign for image signing is a stretch goal for two weeks and should be framed
+  as such. The response must not block shipping with maximalist requirements.

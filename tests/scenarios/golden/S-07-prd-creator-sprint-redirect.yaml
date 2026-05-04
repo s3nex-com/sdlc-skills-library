@@ -1,0 +1,47 @@
+id: S-07
+name: prd-creator-sprint-redirect
+description: >-
+  User brings sprint planning content (ticket list, story points, capacity)
+  with no product intent. Skill must redirect — a sprint plan is not a PRD.
+tag: G
+skill: prd-creator
+skill_directory: skills/phase1/prd-creator/
+mode: lean
+tracks: []
+workflow_path: null
+user_prompt: |
+  I need to write a PRD for next sprint. Here's what the team is working on:
+
+  Sprint 14 capacity: 32 points
+  - PROJ-441: Fix pagination bug on orders list (3 pts)
+  - PROJ-442: Add retry logic to email sender (5 pts)
+  - PROJ-443: Upgrade Rails to 7.1 (8 pts)
+  - PROJ-444: Write migration for customer table (5 pts)
+  - PROJ-445: Update API docs for /invoices endpoint (3 pts)
+  - PROJ-446: Performance fix for slow dashboard query (8 pts)
+
+  Can you turn this into a PRD?
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/prd-creator/SKILL.md
+expected_primary_skill: prd-creator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "sprint"
+      - "product"
+    forbidden_phrases:
+      - "## Problem Statement"
+      - "## Goals"
+      - "## Requirements"
+      - "## Success Metrics"
+  rubric_id: null
+notes: >-
+  Validates that prd-creator refuses to wrap a sprint ticket list in PRD
+  sections — a sprint plan has no product intent, user problem, or goal
+  statement. The response must explain what a PRD requires and what is
+  missing here. Forbidden phrases catch it producing a fake PRD around
+  implementation tickets, which would be low-value theatre.

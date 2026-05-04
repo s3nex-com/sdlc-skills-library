@@ -106,17 +106,47 @@ Outputs land in `tmp/` (gitignored):
 
 ---
 
-## Golden set — 10 scenarios (one per high-leverage skill)
+## Full scenario set — 40 scenarios (4 per skill)
 
 | ID | Skill | Tag | Oracle |
 |----|-------|-----|--------|
+| S-01 | sdlc-orchestrator | G | structure |
 | S-02 | sdlc-orchestrator | C | structure |
+| S-03 | sdlc-orchestrator | G | structure |
+| S-04 | sdlc-orchestrator | C | structure |
 | S-05 | prd-creator | C | structure |
+| S-06 | prd-creator | G | structure |
+| S-07 | prd-creator | G | structure |
+| S-08 | prd-creator | C | structure |
 | S-09 | requirements-tracer | C | structure |
-| S-13 | specification-driven-development | C | tool_backed |
+| S-10 | requirements-tracer | G | rubric → R-10 |
+| S-11 | requirements-tracer | C | structure |
+| S-12 | requirements-tracer | G | structure |
+| S-13 | specification-driven-development | C | tool_backed → validate_openapi.py |
+| S-14 | specification-driven-development | K | tool_backed → validate_openapi.py |
+| S-15 | specification-driven-development | G | structure |
+| S-16 | specification-driven-development | C | structure |
 | S-17 | security-audit-secure-sdlc | C | structure |
+| S-18 | security-audit-secure-sdlc | G | structure |
+| S-19 | security-audit-secure-sdlc | C | structure |
+| S-20 | security-audit-secure-sdlc | G | structure |
 | S-21 | database-migration | C | structure |
-| S-26 | code-implementer | G | rubric |
+| S-22 | database-migration | K | tool_backed → migration_risk.py |
+| S-23 | database-migration | G | structure |
+| S-24 | database-migration | C | structure |
+| S-25 | code-implementer | C | structure |
+| S-26 | code-implementer | G | rubric → R-26 |
+| S-27 | code-implementer | C | structure |
+| S-28 | code-implementer | K | rubric → R-28 |
 | S-29 | code-review-quality-gates | C | structure |
-| S-34 | incident-postmortem | G | rubric |
+| S-30 | code-review-quality-gates | G | structure |
+| S-31 | code-review-quality-gates | C | structure |
+| S-32 | code-review-quality-gates | G | structure |
+| S-33 | incident-postmortem | C | structure |
+| S-34 | incident-postmortem | G | rubric → R-34 |
+| S-35 | incident-postmortem | G | structure |
+| S-36 | incident-postmortem | C | structure |
 | S-37 | design-doc-generator | C | structure |
+| S-38 | design-doc-generator | G | structure |
+| S-39 | design-doc-generator | C | structure |
+| S-40 | design-doc-generator | G | structure |
