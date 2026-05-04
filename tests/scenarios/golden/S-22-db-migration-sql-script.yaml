@@ -1,0 +1,52 @@
+id: S-22
+name: db-migration-sql-script-risk-check
+description: >-
+  Request a safe, step-by-step SQL migration for adding a foreign key column.
+  Tool-backed oracle extracts the SQL block and pipes it through migration_risk.py.
+  A well-guided migration should produce no FAIL-level risk findings.
+tag: K
+skill: database-migration
+skill_directory: skills/phase2/database-migration/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Write the SQL migration for the following change. PostgreSQL 14. The table
+  has approximately 800k rows in production. Prioritise safety over speed.
+
+  We need to add a `subscription_tier_id` column to the `accounts` table as
+  a foreign key referencing `subscription_tiers(id)`. All existing accounts
+  should reference our 'basic' tier (id = 1). The column must eventually be
+  NOT NULL.
+
+  Requirements:
+  - No full table lock that would block production traffic
+  - Each step must be independently reversible
+  - Use IF NOT EXISTS / IF EXISTS guards where applicable
+  - Include a separate rollback script
+
+  Produce the migration as a single SQL file with clear step comments.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase2/database-migration/SKILL.md
+expected_primary_skill: database-migration
+oracle:
+  kind: tool_backed
+  script: skills/phase2/database-migration/scripts/migration_risk.py
+  artifact_lang: sql
+  artifact_ext: sql
+  structure_rules:
+    required_phrases:
+      - "IF NOT EXISTS"
+      - "NOT NULL"
+      - "rollback"
+    forbidden_phrases: []
+  rubric_id: null
+notes: >-
+  The harness extracts the first SQL code block from the response, writes it to
+  tmp/artifacts/S-22-output.sql, and runs migration_risk.py against it. Exit
+  code 1 means FAIL-level risk findings. A correctly guided migration uses
+  IF NOT EXISTS guards (idempotency), avoids adding NOT NULL in a single step
+  on a live table, and has no unguarded DROP statements. Structure rules are
+  checked in addition to the script — they catch obvious omissions before the
+  script runs.

@@ -1,0 +1,70 @@
+id: S-33
+name: incident-postmortem-full-blameless-rca
+description: >-
+  Timeline, metrics, and contributing context supplied. Skill must produce a
+  complete blameless post-mortem: RCA, contributing factors, corrective and
+  preventive actions with owners and dates.
+tag: C
+skill: incident-postmortem
+skill_directory: skills/phase3/incident-postmortem/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Write the post-mortem for this incident.
+
+  === INCIDENT SUMMARY ===
+  Service: Payment processing API
+  Date: 2026-04-28, 14:33–16:47 UTC (134 minutes)
+  Severity: P1
+  Customer impact: ~2,400 payment attempts failed; 3 enterprise customers affected
+
+  === TIMELINE ===
+  14:33 — Deployment of v2.14.1 completed (included a config change to
+          connection pool size: increased from 20 to 200)
+  14:41 — First alerts: p99 latency on /payments spiked to 45s (normal: 120ms)
+  14:43 — On-call engineer paged
+  14:51 — DB CPU at 100%, connection count at 198/200
+  15:02 — Investigated: suspected DB overload; attempted to scale DB vertically
+  15:30 — Vertical scaling complete; no improvement
+  15:44 — Root cause identified: connection pool set to 200 overwhelmed the
+          RDS instance (max_connections = 100 at db.t3.large); each excess
+          connection queued, causing cascading timeout
+  15:51 — Rollback of v2.14.1 initiated
+  16:12 — Rollback complete; latency returning to normal
+  16:47 — All metrics nominal; incident closed
+
+  === CONTRIBUTING CONTEXT ===
+  - No staging environment test of the config change
+  - Connection pool size was changed in a config file, not reviewed in the PR
+  - DB max_connections was not documented or monitored with an alert
+  - Config changes were not part of the deployment checklist
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase3/incident-postmortem/SKILL.md
+expected_primary_skill: incident-postmortem
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "Timeline"
+      - "Root Cause"
+      - "Contributing"
+      - "Action"
+    required_phrases:
+      - "connection pool"
+      - "owner"
+      - "systemic"
+    forbidden_phrases:
+      - "was at fault"
+      - "caused the outage"
+      - "responsible for the incident"
+  rubric_id: null
+notes: >-
+  Validates a complete blameless post-mortem from detailed inputs. All four
+  required sections must be present. The root cause must name the connection
+  pool / max_connections mismatch (not just "misconfiguration"). Contributing
+  factors must cover the process gaps (no staging test, config not in PR review,
+  no alert on max_connections). Actions must have owners and target dates —
+  not vague "improve X" statements. Forbidden phrases catch blame language.

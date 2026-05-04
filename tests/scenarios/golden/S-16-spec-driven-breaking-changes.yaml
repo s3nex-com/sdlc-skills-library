@@ -1,0 +1,70 @@
+id: S-16
+name: spec-driven-breaking-vs-nonbreaking
+description: >-
+  Two versions of the same API spec — classify each change as breaking or
+  non-breaking and state whether a semver major bump is required.
+tag: C
+skill: specification-driven-development
+skill_directory: skills/phase1/specification-driven-development/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Compare these two versions of our /orders API and classify each change.
+
+  === v1.2 (current) ===
+  GET /orders/{id}
+  Response 200:
+    id: string
+    status: string  (enum: pending|processing|shipped|delivered|cancelled)
+    total_amount: number
+    currency: string
+    items: array
+    created_at: datetime
+
+  === v1.3 (proposed) ===
+  GET /orders/{id}
+  Response 200:
+    id: string
+    status: string  (enum: pending|processing|shipped|delivered|cancelled|returned)  ← added "returned"
+    total_amount: number
+    currency: string
+    items: array
+    created_at: datetime
+    updated_at: datetime  ← new field
+    shipping_address: object (nullable)  ← new nullable field
+
+  GET /orders/{id}/timeline  ← new endpoint entirely
+
+  DELETE /orders/{id}  ← new endpoint, was not present in v1.2
+
+  Also: the error response schema changed from { error: string } to
+  { code: string, message: string, details: array }
+
+  Classify each change. State the recommended version bump.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/specification-driven-development/SKILL.md
+expected_primary_skill: specification-driven-development
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "Breaking"
+      - "Non-breaking"
+    required_phrases:
+      - "breaking"
+      - "non-breaking"
+      - "error"
+      - "enum"
+    forbidden_phrases: []
+  rubric_id: null
+notes: >-
+  Validates that the skill correctly classifies: adding enum value "returned"
+  as potentially breaking (clients doing exhaustive enum matching will fail),
+  new optional fields (updated_at, shipping_address) as non-breaking additive,
+  new endpoints as non-breaking additive, and the error schema change as
+  breaking (existing clients parsing { error: string } will break). The
+  recommended version bump must be major (2.0) or minor depending on the
+  skill's classification of the error schema change.

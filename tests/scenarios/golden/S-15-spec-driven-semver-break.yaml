@@ -1,0 +1,41 @@
+id: S-15
+name: spec-driven-semver-break-refused
+description: >-
+  User asks to silently remove a field from an existing API response. Skill must
+  enforce deprecation/versioning discipline — not rubber-stamp a silent breaking change.
+tag: G
+skill: specification-driven-development
+skill_directory: skills/phase1/specification-driven-development/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We want to remove the `legacy_customer_id` field from the GET /customers/{id}
+  response. It was added two years ago and we know most clients don't use it
+  anymore. Can you just update the spec to remove it? We're not doing a new
+  API version for this — it's a minor cleanup.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/specification-driven-development/SKILL.md
+expected_primary_skill: specification-driven-development
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "breaking"
+      - "deprecat"
+      - "version"
+    forbidden_phrases:
+      - "Here is the updated spec"
+      - "I've removed `legacy_customer_id`"
+      - "Sure, removing"
+  rubric_id: null
+notes: >-
+  Validates that the skill refuses to silently remove a field from a live API
+  without a versioning or deprecation path. "Most clients don't use it" is not
+  a safe basis for a breaking change — some clients may depend on it. The correct
+  response names the breaking change risk, explains the deprecation-then-remove
+  pattern (sunset header, version bump, or grace period), and does not produce
+  an updated spec that drops the field without that context.

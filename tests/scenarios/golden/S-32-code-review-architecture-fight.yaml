@@ -1,0 +1,47 @@
+id: S-32
+name: code-review-architecture-fight-redirect
+description: >-
+  PR review comment thread escalates into an architectural disagreement. Skill
+  must redirect to ADR / architecture-review rather than adjudicating in-thread.
+tag: G
+skill: code-review-quality-gates
+skill_directory: skills/phase2/code-review-quality-gates/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We're reviewing a PR and it's turned into a big argument. The PR adds a
+  new caching layer using Redis. One reviewer says we should be using
+  Memcached (we use it elsewhere). Another says we should use an in-process
+  cache with no external dependency for this use case. A third says the
+  whole caching approach is wrong and we should redesign the data access
+  pattern instead.
+
+  Everyone has strong opinions and the PR has been open for a week.
+  How do we resolve this in the review?
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase2/code-review-quality-gates/SKILL.md
+expected_primary_skill: code-review-quality-gates
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "ADR"
+      - "architecture"
+      - "decision"
+    forbidden_phrases:
+      - "Redis is the right choice"
+      - "Memcached is better"
+      - "you should use"
+  rubric_id: null
+notes: >-
+  Validates that the skill does not adjudicate the technical debate in the PR
+  thread. Architecture-level decisions (which cache technology, data access
+  pattern redesign) belong in an ADR, not a PR comment. The correct response:
+  block the PR from merging until the architectural question is resolved via an
+  ADR or architecture review session, assign an owner to facilitate that
+  decision, and keep the PR in draft. Forbidden phrases catch the skill picking
+  a side in the technical debate.

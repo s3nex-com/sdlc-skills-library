@@ -1,0 +1,43 @@
+id: S-10
+name: requirements-tracer-bdd-only-no-matrix
+description: >-
+  User wants BDD scenarios only and explicitly refuses a trace matrix. Skill
+  must negotiate minimum viable traceability rather than silently dropping it
+  or unconditionally complying.
+tag: G
+skill: requirements-tracer
+skill_directory: skills/phase1/requirements-tracer/
+mode: lean
+tracks: []
+workflow_path: null
+user_prompt: |
+  Write me the BDD scenarios for these requirements. I do NOT want a trace
+  matrix — it's overhead we don't need. Just the Given/When/Then scenarios,
+  nothing else.
+
+  FR-001: Users can reset their password via a tokenised email link.
+  FR-002: The reset token expires after 30 minutes.
+  FR-003: A used token cannot be reused.
+  FR-004: The system rate-limits reset requests to 3 per hour per email address.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/requirements-tracer/SKILL.md
+expected_primary_skill: requirements-tracer
+oracle:
+  kind: rubric
+  script: null
+  structure_rules:
+    required_phrases:
+      - "Given"
+      - "When"
+      - "Then"
+    forbidden_phrases: []
+  rubric_id: R-10
+notes: >-
+  This is a guardrail scenario testing traceability negotiation. The correct
+  behaviour is NOT to silently drop traceability. The skill should produce the
+  BDD scenarios (the user's ask is reasonable) while negotiating at minimum a
+  lightweight trace: scenario IDs that map back to FR numbers. Full matrix is
+  optional in Lean mode, but zero traceability linkage violates the skill contract.
+  The rubric (R-10) has binary checks for the negotiation behaviour.
+rubric_id: R-10

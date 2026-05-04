@@ -1,0 +1,49 @@
+id: S-36
+name: incident-postmortem-customer-vs-internal
+description: >-
+  Same incident, two audiences. Skill must produce distinct customer-facing
+  and internal post-mortem variants with appropriate tone and detail level.
+tag: C
+skill: incident-postmortem
+skill_directory: skills/phase3/incident-postmortem/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  We need two versions of the post-mortem for the same incident.
+
+  Incident: Our file storage service was unavailable for 2 hours on 2026-04-15
+  due to a misconfigured S3 bucket policy deployed during a routine update.
+  No data was lost. All files were intact and accessible after the fix.
+  Three customers noticed and emailed support.
+
+  Please produce:
+  1. A customer-facing status page post-mortem (brief, jargon-free, focused
+     on impact and resolution, suitable for publishing publicly)
+  2. An internal engineering post-mortem (full RCA, technical detail,
+     contributing factors, corrective actions with owners)
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase3/incident-postmortem/SKILL.md
+expected_primary_skill: incident-postmortem
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "Customer"
+      - "Internal"
+    required_phrases:
+      - "customer"
+      - "internal"
+      - "RCA"
+      - "action"
+    forbidden_phrases: []
+  rubric_id: null
+notes: >-
+  Validates that the skill produces two clearly distinct documents, not one
+  document with slightly different wording. The customer-facing version must
+  be jargon-free, focus on impact and resolution, and avoid internal terms
+  like "S3 bucket policy" or "IAM". The internal version must include full
+  technical detail, contributing factors, and corrective actions with owners.
+  Both must be blameless — neither version should name an individual as the cause.

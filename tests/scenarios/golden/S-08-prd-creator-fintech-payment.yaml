@@ -1,0 +1,51 @@
+id: S-08
+name: prd-creator-fintech-payment-feature
+description: >-
+  Fintech payment feature with compliance signals in the input. PRD must include
+  risks, compliance placeholders, and not omit PCI/regulatory context.
+tag: C
+skill: prd-creator
+skill_directory: skills/phase1/prd-creator/
+mode: standard
+tracks:
+  - fintech-payments
+workflow_path: null
+user_prompt: |
+  We're adding instant bank-to-bank payouts to our platform for EU merchants.
+  Key things we know:
+  - Payouts to merchant bank accounts via SEPA Instant Credit Transfer
+  - Sub-10-second settlement target
+  - Merchants configure a payout schedule (daily, weekly, on-demand)
+  - We need to handle failed payouts and retry logic
+  - There are PCI DSS implications we haven't fully scoped yet
+  - GDPR applies — payout data involves personal bank details
+  - Our payment processor partner (TBD) needs to be integrated
+
+  Write the PRD.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/prd-creator/SKILL.md
+expected_primary_skill: prd-creator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections:
+      - "Risk"
+      - "Compliance"
+    required_phrases:
+      - "PCI"
+      - "GDPR"
+      - "SEPA"
+      - "retry"
+      - "payout"
+    forbidden_phrases:
+      - "steering committee"
+      - "it may be appropriate to consider"
+  rubric_id: null
+notes: >-
+  Validates that in a fintech context the PRD explicitly surfaces compliance
+  placeholders (PCI DSS scope, GDPR data handling for bank details) and
+  risk sections — not just feature requirements. The unresolved payment
+  processor partner must appear as an open question, not be silently omitted
+  or filled in with an invented name.

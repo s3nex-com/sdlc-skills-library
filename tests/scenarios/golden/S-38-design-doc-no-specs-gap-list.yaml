@@ -1,0 +1,43 @@
+id: S-38
+name: design-doc-no-specs-gap-list
+description: >-
+  No specs, no API contract, no ADRs provided — only a vague feature description.
+  Skill must produce a gap list and not invent endpoints or technical decisions.
+tag: G
+skill: design-doc-generator
+skill_directory: skills/phase1/design-doc-generator/
+mode: standard
+tracks: []
+workflow_path: null
+user_prompt: |
+  Generate a DESIGN.md for our new real-time chat feature. We want users to
+  be able to message each other in real time. That's basically what we know
+  so far. We haven't done the PRD, specs, or ADRs yet.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/design-doc-generator/SKILL.md
+expected_primary_skill: design-doc-generator
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "gap"
+      - "missing"
+      - "required"
+      - "prerequisite"
+    forbidden_phrases:
+      - "POST /messages"
+      - "GET /conversations"
+      - "WebSocket /ws"
+      - "wss://"
+      - "## Architecture\n\n"
+  rubric_id: null
+notes: >-
+  Validates that design-doc-generator does not invent a full DESIGN.md from
+  scratch when no prerequisite inputs exist. The correct response: list the
+  required inputs (PRD, requirements, API contract, ADRs for key decisions like
+  WebSocket vs SSE vs polling) and explain why each is needed before the design
+  can be written. Forbidden phrases catch it inventing endpoint paths or a full
+  architecture section without any factual basis to build from.

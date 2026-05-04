@@ -1,0 +1,40 @@
+id: S-12
+name: requirements-tracer-tests-without-requirements
+description: >-
+  User asks to generate tests with no requirements provided. Skill must redirect —
+  tests cannot be traced without requirements to trace them to.
+tag: G
+skill: requirements-tracer
+skill_directory: skills/phase1/requirements-tracer/
+mode: lean
+tracks: []
+workflow_path: null
+user_prompt: |
+  We need test cases for the user authentication module. Just generate a good
+  set of test scenarios — we don't have formal requirements written down,
+  we've just been building it. Cover login, logout, session expiry, and
+  password reset. Don't worry about tracing them to anything.
+context:
+  artifact_fixture: null
+  skill_load_path: skills/phase1/requirements-tracer/SKILL.md
+expected_primary_skill: requirements-tracer
+oracle:
+  kind: structure
+  script: null
+  structure_rules:
+    required_sections: []
+    required_phrases:
+      - "requirement"
+      - "prerequisite"
+    forbidden_phrases:
+      - "Given a user"
+      - "When the user logs in"
+      - "Scenario: Login"
+  rubric_id: null
+notes: >-
+  Validates that requirements-tracer does not generate untraced test scenarios.
+  The skill contract requires requirements to exist before scenarios are written —
+  otherwise the traceability matrix is meaningless. The correct response identifies
+  what is missing (formal requirements or at minimum informal acceptance criteria)
+  and redirects to capturing them first. Forbidden phrases catch it jumping straight
+  to BDD scenarios without any requirements foundation.

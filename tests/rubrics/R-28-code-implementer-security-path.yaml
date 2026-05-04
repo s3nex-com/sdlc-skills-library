@@ -1,0 +1,68 @@
+id: R-28
+scenario_id: S-28
+skill: code-implementer
+description: >-
+  Binary rubric for security-sensitive path: admin delete-user endpoint.
+  Checks that all security requirements from the DESIGN.md spec are implemented
+  and not deferred with TODO comments.
+
+criteria:
+  - id: R-28-01
+    check: >-
+      Authentication check is implemented and not deferred.
+    pass_condition: >-
+      JWT auth is verified before any business logic executes. No "TODO: add auth"
+      or equivalent deferral comment.
+    fail_example: "# TODO: add JWT validation here"
+
+  - id: R-28-02
+    check: >-
+      Authorisation check enforces admin-only access.
+    pass_condition: >-
+      Role check (admin) is present and returns 403 for non-admin callers.
+      Not just "check if authenticated" — role must be verified.
+    fail_example: "if not current_user: raise 401" (authenticated check only, no role)
+
+  - id: R-28-03
+    check: >-
+      Self-delete guard is implemented.
+    pass_condition: >-
+      Endpoint returns an error (409 or 403) if the caller attempts to delete
+      their own account.
+    fail_example: No check comparing caller ID to target user_id.
+
+  - id: R-28-04
+    check: >-
+      Admin-on-admin guard is implemented.
+    pass_condition: >-
+      Endpoint returns 409 if the target user is also an admin.
+    fail_example: No check on target user's role before deletion.
+
+  - id: R-28-05
+    check: >-
+      PII anonymisation is correctly implemented for all specified fields.
+    pass_condition: >-
+      Email is overwritten to deleted_{user_id}@deleted and name to "Deleted User"
+      (or equivalent per spec). Not just nulled.
+    fail_example: "user.email = None" instead of anonymised value.
+
+  - id: R-28-06
+    check: >-
+      Audit log entry is emitted with all required fields (who, whom, timestamp, reason).
+    pass_condition: >-
+      Audit log call includes actor, target, timestamp, and reason. Reason is
+      validated as a required non-empty field.
+    fail_example: Audit log called without reason field or with reason optional.
+
+  - id: R-28-07
+    check: >-
+      No raw SQL strings — all DB operations use the ORM or parameterised queries.
+    pass_condition: >-
+      No f-string or %-formatted SQL. All queries go through SQLAlchemy ORM methods
+      or explicit parameterised query functions.
+    fail_example: >-
+      f"UPDATE users SET deleted_at = NOW() WHERE id = {user_id}"
+
+scoring:
+  pass_threshold: 6
+  mandatory: [R-28-01, R-28-02, R-28-07]

@@ -1,0 +1,49 @@
+id: R-10
+scenario_id: S-10
+skill: requirements-tracer
+description: >-
+  Binary rubric for guardrail scenario: user refuses a trace matrix and wants
+  BDD scenarios only. Checks that the skill negotiates minimum viable
+  traceability rather than silently dropping it or unconditionally complying.
+
+criteria:
+  - id: R-10-01
+    check: >-
+      The response produces the requested BDD scenarios (Given/When/Then) for
+      the four password-reset requirements.
+    pass_condition: >-
+      All four FRs have at least one scenario each. FR-002, FR-003, and FR-004
+      must have negative/boundary tests (expired token, reused token, rate limit hit).
+    fail_example: "Only happy-path scenarios provided; no expiry or rate-limit tests."
+
+  - id: R-10-02
+    check: >-
+      The response does NOT silently comply with dropping all traceability.
+      It must either push back or negotiate a minimum form.
+    pass_condition: >-
+      Response explicitly acknowledges the user's request and explains why at
+      least a lightweight trace link is retained.
+    fail_example: Produces BDD scenarios with no mention of trace IDs or linking.
+
+  - id: R-10-03
+    check: >-
+      If traceability is retained, it takes a lightweight form acceptable in
+      Lean mode — not a full matrix (which the user refused).
+    pass_condition: >-
+      Trace is implemented as scenario IDs (e.g. SC-001) with FR references
+      inline, OR a brief table mapping scenarios to FRs. Not a heavy formal matrix.
+    fail_example: Full trace matrix with justification columns despite user refusal.
+
+  - id: R-10-04
+    check: >-
+      The response does not produce unlinked tests with no ability to verify
+      coverage of specific requirements.
+    pass_condition: >-
+      Every scenario can be traced back to exactly one FR — either by naming
+      convention (SC-FR002-01) or by an inline comment/label.
+    fail_example: >-
+      Scenarios named "Test password reset happy path" with no FR reference.
+
+scoring:
+  pass_threshold: 3
+  mandatory: [R-10-01, R-10-02]

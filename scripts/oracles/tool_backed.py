@@ -17,7 +17,7 @@ SCRIPT_ARGS: dict[str, object] = {
 
 
 def _extract_code_block(text: str, lang: str = "yaml") -> str | None:
-    # Try language-tagged block first (yaml or yml)
+    # Try language-tagged block first
     pattern = re.compile(
         rf"```(?:{re.escape(lang)}|yml)\s*\n(.*?)```",
         re.DOTALL | re.IGNORECASE,
@@ -43,7 +43,10 @@ def run(
     if not script_rel:
         return {"status": "ERROR", "detail": "tool_backed oracle missing script path", "checks": []}
 
-    artifact = _extract_code_block(response_text)
+    artifact_lang = oracle_cfg.get("artifact_lang", "yaml")
+    artifact_ext = oracle_cfg.get("artifact_ext", "yaml")
+
+    artifact = _extract_code_block(response_text, lang=artifact_lang)
     if artifact is None:
         return {
             "status": "FAIL",
@@ -53,7 +56,7 @@ def run(
 
     artifacts_dir = output_dir / "artifacts"
     artifacts_dir.mkdir(parents=True, exist_ok=True)
-    artifact_path = artifacts_dir / f"{scenario_id}-output.yaml"
+    artifact_path = artifacts_dir / f"{scenario_id}-output.{artifact_ext}"
     artifact_path.write_text(artifact, encoding="utf-8")
 
     script_path = repo_root / script_rel
