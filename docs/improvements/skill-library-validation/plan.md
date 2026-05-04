@@ -1,6 +1,6 @@
 # Skill library — runtime validation and verification plan
 
-**Status:** Step 1 complete — golden scenario fixtures written. Steps 2–3 (harness, CI) pending.  
+**Status:** Steps 1–2 complete — fixtures and harness written. Step 3 (CI integration) pending.  
 **Purpose:** Preserve how we would prove that loading these skills yields **correct guardrails** and **completed tasks** under real session composition (mode, tracks, workflow path), separately from Markdown packaging checks.
 
 ---
@@ -298,3 +298,4 @@ Maintain separate rubric files if criteria grow large; reference by `rubric_id` 
 
 - **Introduced:** design-time capture of validation methodology and example scenario set for future tooling.
 - **Step 1 complete (2026-05-04):** 10 golden scenario YAML fixtures written to `tests/scenarios/golden/` (S-02, S-05, S-09, S-13, S-17, S-21, S-26, S-29, S-34, S-37). Two rubric stubs added to `tests/rubrics/` for the G-type scenarios (R-26, R-34). `tests/README.md` documents the schema and oracle kinds.
+- **Step 2 complete (2026-05-04):** Harness written to `scripts/run_eval.py`. Three oracle modules in `scripts/oracles/` (structure, tool_backed, rubric). `requirements.txt` updated with `anthropic>=0.40.0`. `tmp/` added to `.gitignore`. Run with `python scripts/run_eval.py --dry-run` to verify scenario loading; remove `--dry-run` to execute against the API.

@@ -73,14 +73,36 @@ notes: >-                         # what this scenario validates and why
 
 ---
 
-## Running scenarios (harness not yet built)
+## Running scenarios
 
-Step 2 of the implementation plan will build `scripts/run_eval.py`. Until then:
+```bash
+# Install dependencies
+pip install anthropic pyyaml
 
-1. Load the skill file at `context.skill_load_path` as the system prompt.
-2. Send `user_prompt` to the model with the specified `mode` and `tracks` as injected context.
-3. Evaluate the response against `oracle` rules.
-4. For `tool_backed` oracles: extract the artefact block from the response and pipe it through `oracle.script`.
+# Set API key
+export ANTHROPIC_API_KEY=sk-...
+
+# Dry run — load all golden scenarios, skip API calls
+python scripts/run_eval.py --dry-run
+
+# Run all 10 golden scenarios
+python scripts/run_eval.py
+
+# Run a single scenario
+python scripts/run_eval.py --scenario S-02
+
+# JSON report
+python scripts/run_eval.py --json --output-dir tmp/
+
+# Different model
+python scripts/run_eval.py --model claude-opus-4-7
+```
+
+Outputs land in `tmp/` (gitignored):
+- `tmp/transcripts/{id}.json` — full prompt + response per scenario
+- `tmp/artifacts/{id}-output.yaml` — extracted code artifact (tool_backed scenarios only)
+- `tmp/rubrics/{id}-review.md` — human-review checklist (rubric scenarios)
+- `tmp/report.json` — machine-readable results for all scenarios
 
 ---
 
